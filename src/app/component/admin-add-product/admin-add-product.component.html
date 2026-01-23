@@ -1,0 +1,272 @@
+<div class="product-management-container">
+  <h2>Admin Product Management</h2>
+
+  <form [formGroup]="productForm" class="form-container">
+    <!-- PRODUCT CATEGORY -->
+    <div class="radio-group">
+      <label
+        ><input
+          type="radio"
+          value="Young Boy"
+          formControlName="productCategory"
+        />
+        Young Boy</label
+      >
+      <label
+        ><input
+          type="radio"
+          value="Young Girl"
+          formControlName="productCategory"
+        />
+        Young Girl</label
+      >
+      <label
+        ><input type="radio" value="Kids" formControlName="productCategory" />
+        Kids</label
+      >
+    </div>
+
+    <!-- SIZES -->
+    <div class="size-box">
+      <span class="size-title">Sizes:</span>
+      <div class="size-option">
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('S')"
+            (change)="toggleSize('S', $event)"
+          />
+          S</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('M')"
+            (change)="toggleSize('M', $event)"
+          />
+          M</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('L')"
+            (change)="toggleSize('L', $event)"
+          />
+          L</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('XL')"
+            (change)="toggleSize('XL', $event)"
+          />
+          XL</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('S')"
+            (change)="toggleSize('S', $event)"
+          />
+          S</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('M')"
+            (change)="toggleSize('M', $event)"
+          />
+          M</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('L')"
+            (change)="toggleSize('L', $event)"
+          />
+          L</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            [checked]="sizes.value.includes('XL')"
+            (change)="toggleSize('XL', $event)"
+          />
+          XL</label
+        >
+      </div>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <input formControlName="name" placeholder="Product Name" />
+    <input formControlName="brand" placeholder="Brand Name" />
+    <input type="number" min="1" formControlName="price" placeholder="Price" />
+    <input
+      type="number"
+      min="0"
+      formControlName="oldprice"
+      placeholder="Old Price"
+    />
+    <input type="number" formControlName="discount" placeholder="Discount %" />
+    <input
+      type="number"
+      min="0"
+      formControlName="quantity"
+      placeholder="Quantity"
+    />
+    <input formControlName="itemCategory" placeholder="Category" />
+    <textarea
+      formControlName="description"
+      class="desc-box"
+      placeholder="Product Description"
+    ></textarea>
+
+    <!-- IMAGE DRAG & DROP -->
+    <div
+      class="image-dropzone"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+    >
+      <p>Drag & drop images here or click to select</p>
+      <small>(Images + 1 vedio allowed)</small>
+      <input
+        type="file"
+        accept="image/* , video/*"
+        (change)="onFileSelect($event)"
+        multiple
+      />
+    </div>
+
+    <!-- IMAGE PREVIEW -->
+    <div class="image-preview-container">
+      <div
+        *ngFor="let img of images.controls; let i = index"
+        class="preview-box"
+      >
+        <img [src]="img.value" />
+        <button type="button" (click)="removeImage(i)">✕</button>
+      </div>
+
+      <!-- vedio preview -->
+      <div class="preview-box" *ngIf="video">
+        <video [src]="video" controls></video>
+        <span class="remove-btn" (click)="removeVideo()">✕</span>
+      </div>
+    </div>
+
+    <!-- COLOR PICKER -->
+    <div class="color-input">
+      <input type="color" formControlName="currentColor" />
+      <button type="button" class="small-btn" (click)="addColor()">
+        Add Color
+      </button>
+    </div>
+
+    <!-- COLOR CHIPS -->
+    <div class="color-list">
+      <div class="color-chip" *ngFor="let c of colors.controls; let i = index">
+        <span class="color-dot" [style.background]="c.value.value"></span>
+        <span class="color-text">{{ c.value.value }}</span>
+        <span class="remove" (click)="removeColor(i)">✕</span>
+      </div>
+    </div>
+
+    <!-- FORM ACTIONS -->
+    <div class="btn-container">
+      <button
+        type="button"
+        class="small-btn"
+        [disabled]="productForm.invalid"
+        (click)="addProduct()"
+        *ngIf="!Isbtn"
+      >
+        Add Product
+      </button>
+      <button
+        type="button"
+        class="small-btn"
+        (click)="addProduct()"
+        *ngIf="Isbtn"
+      >
+        Update Product
+      </button>
+      <button
+        type="button"
+        class="small-btn cancel"
+        (click)="ResetForm()"
+        *ngIf="Isbtn"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <!-- PRODUCT TABLE -->
+  <div class="search-box">
+    <input
+      type="search"
+      [formControl]="searchControl"
+      placeholder="Search product..."
+    />
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Brand</th>
+          <th class="desc-col">Description</th>
+          <th>Price</th>
+          <th>Discount</th>
+          <th>Old Price</th>
+          <th>Quantity</th>
+          <th>Category</th>
+          <th>Sizes</th>
+          <th>Colors</th>
+          <th>Images</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of DataItem">
+          <td>{{ p.itemName }}</td>
+          <td>{{ p.brand }}</td>
+          <td class="desc-col" style="text-align: left">{{ p.detail }}</td>
+          <td>{{ p.price }}</td>
+          <td>{{ p.discount > 0 ? "-" + p.discount + "%" : "No Discount" }}</td>
+          <td>{{ p.oldprice }}</td>
+          <td>{{ p.qty }}</td>
+          <td>{{ p.category }}</td>
+          <td>
+            <div *ngFor="let c of p?.itemSizes">
+              {{ c.sizeNames }}
+            </div>
+          </td>
+          <td class="color-display">
+            <div
+              *ngFor="let c of p?.itemColors"
+              class="color-dot-table"
+              [style.background]="c.colorCodes"
+            ></div>
+          </td>
+          <td>
+            <div *ngFor="let img of p.itemImages">
+              <img [src]="img.imgPaths" class="product-img" />
+            </div>
+          </td>
+          <td>
+            <button class="small-btn" (click)="EditProduct(p)">Edit</button>
+            <button class="small-btn cancel" (click)="DeleteProduct(p)">
+              Delete
+            </button>
+            <button
+              class="status-btn"
+              [ngClass]="p.status ? 'active' : 'inactive'"
+              (click)="toggleStatus(p)"
+            >
+              {{ p.status ? "Active" : "Inactive" }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<!-- <h2 class="dashboard"  (click)="navigatetoadminproduct()">Admin Product Management</h2>  -->
+
+<div class="admin-action" (click)="navigatetoadminproduct()">
+  <div class="text">
+    <h3>Admin Product Management</h3>
+    <p>Click to view and manage products</p>
+  </div>
+  <span class="arrow">→</span>
+</div>
+
+<h2 class="title">Admin Dashboard</h2>
+
+<!-- Widgets -->
+<div class="dashboard-grid">
+  <app-widget-card
+    title="Total Products"
+    [value]="stats.totalProducts"
+  ></app-widget-card>
+  <app-widget-card
+    title="Total Sales"
+    [value]="stats.totalSales"
+  ></app-widget-card>
+  <app-widget-card
+    title="Daily Sales"
+    [value]="stats.dailySales"
+  ></app-widget-card>
+  <app-widget-card
+    title="Weekly Sales"
+    [value]="stats.weeklySales"
+  ></app-widget-card>
+  <app-widget-card
+    title="Monthly Sales"
+    [value]="stats.monthlySales"
+  ></app-widget-card>
+</div>
+
+<!-- Stock alert section -->
+<div
+  class="stock-alerts"
+  *ngIf="lowStockProducts.length || outOfStockProducts.length"
+>
+  <div class="alert low-stock" *ngIf="lowStockProducts.length">
+    <h4 style="color: black">⚠ Low Stock Products</h4>
+    <div *ngFor="let p of lowStockProducts">
+      {{ p.name }} - Only {{ p.totalQuantity - p.sold }} left
+    </div>
+  </div>
+
+  <div class="alert out-stock" *ngIf="outOfStockProducts.length">
+    <h4 style="color: black">⛔ Out of Stock</h4>
+
+    <div *ngFor="let p of outOfStockProducts">
+      {{ p.name }}
+    </div>
+  </div>
+</div>
+
+<!-- Bar Chart -->
+<div class="chart-section">
+  <h3>Product-wise Sales</h3>
+  <app-widget-chart
+    [labels]="productSalesLabels"
+    [data]="productSalesData"
+    chartType="bar"
+  >
+  </app-widget-chart>
+</div>
+
+<div class="chart-section">
+  <h3>Weekly Growth</h3>
+  <app-widget-chart
+    [labels]="weeklyLabels"
+    [data]="weeklySales"
+    chartType="line"
+  >
+  </app-widget-chart>
+</div>
+
+<!-- Table -->
+<div class="table-section">
+  <h3>Top Selling Products</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Sold</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of products">
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>$ {{ p.price }}</td>
+        <td>{{ p.sold }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
