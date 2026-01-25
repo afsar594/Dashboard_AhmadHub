@@ -1,12 +1,11 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 
-export const appConfig: ApplicationConfig = {
+export const appConfig = {
   providers: [
-    provideHttpClient(), // ✅ REQUIRED
     provideRouter(routes),
+    provideHttpClient(withInterceptors([LoaderInterceptor])),
   ],
 };

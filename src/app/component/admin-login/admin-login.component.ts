@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
 export class AdminLoginComponent {
   loginForm!: FormGroup;
   submitted = false;
-  showPassword = false; // ✅ track show/hide password
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
