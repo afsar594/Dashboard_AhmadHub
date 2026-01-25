@@ -1,6 +1,8 @@
 <div class="login-container">
   <h2>Admin Login</h2>
-  <input [(ngModel)]="username" placeholder="Username" />
-  <input [(ngModel)]="password" type="password" placeholder="Password" />
-  <button (click)="login()" (click)="navigatetodashboard()">Login</button>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <input placeholder="email" />
+    <input placeholder="password" />
+    <button (click)="navigatetodashboard()">Login</button>
+  </form>
 </div>
