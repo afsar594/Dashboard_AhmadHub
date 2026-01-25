@@ -1,42 +1,233 @@
-.login-container {
-  width: 300px;
-  margin: 100px auto;
+/* ===== Layout Same ===== */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
+  width: 100%;
+}
+.login-card {
+  background: #ffffff;
+  padding: 50px 35px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* soft shadow */
+  max-width: 450px;
+  width: 100%;
   text-align: center;
-  background: #f8f8f8;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  /* transition removed */
 }
 
-.login-container h2 {
-  margin-bottom: 20px;
-  color: #ff6600;
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.login-container input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.password-box {
+  position: relative;
 }
 
-.login-container input:focus {
+.password-box input {
+  width: 100%;
+  padding-right: 40px; /* space for eye icon inside input */
+  padding-left: 10px;
+  height: 45px;
+  font-size: 14px;
   border: 1px solid #ff6600;
+  border-radius: 8px;
   outline: none;
 }
 
-.login-container button {
-  width: 95%;
-  padding: 10px;
-  background: #ff6600;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
+.password-box input:focus {
+  border-color: #ff9933;
+  /* box-shadow: 0 0 10px rgba(255,102,0,0.3); */
 }
 
-.login-container button:hover {
-  background: #e65c00;
+/* Eye icon inside input */
+.show-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  /* background: #ffffff; */
+}
+
+/* ===== Login Card ===== */
+.login-card {
+  background: #fff;
+  padding: 50px 35px;
+  border-radius: 20px;
+  /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); */
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+/* ===== Login Heading ===== */
+.login-card h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #ff6600; /* theme color */
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* ===== Input Boxes ===== */
+.input-box {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 15px 15px;
+  border: 1px solid #555555; /* theme color */
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.input-box input:focus ~ label span,
+.input-box input.ng-dirty ~ label span {
+  color: #ff6600; /* theme color on focus */
+  transform: translateY(-22px);
+  font-size: 12px;
+}
+
+/* ===== Label inside input ===== */
+/* ===== Input Boxes Default ===== */
+.input-box input {
+  width: 100%;
+  padding: 15px 15px;
+  padding-right: 40px; /* space for eye icon */
+  font-size: 14px;
+  border: 1px solid #555555; /* default light black border */
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+/* ===== Input Focus / Click ===== */
+.input-box input:focus {
+  border-color: #ff6600; /* theme color border */
+  /* box-shadow: 0 0 10px rgba(255, 102, 0, 0.15); */
+}
+
+/* ===== Floating Label ===== */
+.input-box label {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  color: #555555; /* default label color = black */
+  transition: all 0.3s;
+}
+
+/* ===== Each letter (stagger effect optional) ===== */
+.input-box label span {
+  background: #fff;
+  padding: 0 2px;
+  transition: 0.3s;
+}
+
+/* ===== When Input Focused or Filled ===== */
+.input-box input:focus ~ label span,
+.input-box input.ng-dirty ~ label span {
+  transform: translateY(-22px);
+  font-size: 12px;
+  color: #ff6600; /* theme color when floating */
+}
+
+/* Stagger effect for label letters */
+.input-box label span:nth-child(1) {
+  transition-delay: 0ms;
+}
+.input-box label span:nth-child(2) {
+  transition-delay: 50ms;
+}
+.input-box label span:nth-child(3) {
+  transition-delay: 100ms;
+}
+.input-box label span:nth-child(4) {
+  transition-delay: 150ms;
+}
+.input-box label span:nth-child(5) {
+  transition-delay: 200ms;
+}
+.input-box label span:nth-child(6) {
+  transition-delay: 250ms;
+}
+.input-box label span:nth-child(7) {
+  transition-delay: 300ms;
+}
+.input-box label span:nth-child(8) {
+  transition-delay: 350ms;
+}
+
+/* ===== Error Messages ===== */
+.error small {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+  text-align: left;
+}
+
+/* ===== Password Eye Icon ===== */
+/* .password-box {
+  position: relative;
+}
+
+.show-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+} */
+
+/* ===== Button ===== */
+button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #ff9933, #ff6600); /* gradient button */
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #ff6600, #ff9933);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 35px 25px;
+  }
+
+  .login-card h2 {
+    font-size: 24px;
+  }
 }
