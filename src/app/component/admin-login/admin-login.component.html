@@ -1,8 +1,55 @@
 <div class="login-container">
-  <h2>Admin Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <input placeholder="email" />
-    <input placeholder="password" />
-    <button (click)="navigatetodashboard()">Login</button>
-  </form>
+  <div class="login-card">
+    <h2>Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email -->
+      <div class="input-box">
+        <input type="email" formControlName="email" />
+        <label class="char-label">
+          <span>E</span><span>m</span><span>a</span><span>i</span><span>l</span>
+        </label>
+
+        <div class="error" *ngIf="hasError('email', 'required')">
+          <small>Email is required</small>
+        </div>
+        <div class="error" *ngIf="hasError('email', 'email')">
+          <small>Enter a valid email</small>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-box password-box">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+        />
+        <label class="char-label">
+          <span>P</span><span>a</span><span>s</span><span>s</span><span>w</span
+          ><span>o</span><span>r</span><span>d</span>
+        </label>
+
+        <!-- Show password checkbox -->
+        <div class="show-password">
+          <input type="checkbox" id="showPass" (change)="togglePassword()" />
+          <!-- <label for="showPass"></label> -->
+        </div>
+
+        <div class="error" *ngIf="hasError('password', 'required')">
+          <small>Password is required</small>
+        </div>
+        <div
+          class="error"
+          *ngIf="
+            hasError('password', 'minlength') ||
+            hasError('password', 'maxlength')
+          "
+        >
+          <small>Password must be 5 to 8 characters</small>
+        </div>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
 </div>
