@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { WidgetCardComponent } from '../widget-card/widget-card.component';
 import { WidgetChartComponent } from '../widget-chart/widget-chart.component';
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -66,10 +67,15 @@ export class AdminDashboardComponent {
       sold: 110,
     },
   ];
+  allProduct: any;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private api: ApiService,
+  ) {}
 
   ngOnInit(): void {
+    this.getAllProduch();
     this.lowStockProducts = this.products.filter((p) => {
       const remaining = p.totalQuantity - p.sold;
       return remaining > 0 && remaining <= 5;
@@ -81,6 +87,11 @@ export class AdminDashboardComponent {
   }
   navigatetoadminproduct() {
     this.router.navigate(['adminproductmanagement']);
+  }
+  getAllProduch() {
+    this.api.getItemsAll().subscribe((res: any) => {
+      this.allProduct = res.data.length;
+    });
   }
 }
 interface Product {
