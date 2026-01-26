@@ -1,12 +1,12 @@
 /* ===== Layout Same ===== */
-body,
+/* body,
 html {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   height: 100%;
   width: 100%;
-}
+} */
 .login-card {
   background: #ffffff;
   padding: 50px 35px;
@@ -16,7 +16,6 @@ html {
   width: 100%;
   text-align: center;
   position: relative;
-  /* transition removed */
 }
 
 .login-container {
@@ -31,16 +30,16 @@ html {
   position: relative;
 }
 
-.password-box input {
+/* .password-box input {
   width: 100%;
-  padding-right: 40px; /* space for eye icon inside input */
+  padding-right: 40px; 
   padding-left: 10px;
   height: 45px;
   font-size: 14px;
   border: 1px solid #ff6600;
   border-radius: 8px;
   outline: none;
-}
+} */
 
 .password-box input:focus {
   border-color: #ff9933;
@@ -50,7 +49,7 @@ html {
 /* Eye icon inside input */
 .show-password {
   position: absolute;
-  right: 10px;
+  right: 30px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -64,7 +63,6 @@ html {
   background: #fff;
   padding: 50px 35px;
   border-radius: 20px;
-  /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); */
   max-width: 450px;
   width: 100%;
   text-align: center;
@@ -89,7 +87,7 @@ html {
 .input-box input {
   width: 100%;
   padding: 15px 15px;
-  border: 1px solid #555555; /* theme color */
+  border: 1px solid #555555; 
   border-radius: 8px;
   font-size: 14px;
   outline: none;
@@ -98,7 +96,7 @@ html {
 
 .input-box input:focus ~ label span,
 .input-box input.ng-dirty ~ label span {
-  color: #ff6600; /* theme color on focus */
+  color: #ff6600; 
   transform: translateY(-22px);
   font-size: 12px;
 }
@@ -106,11 +104,11 @@ html {
 /* ===== Label inside input ===== */
 /* ===== Input Boxes Default ===== */
 .input-box input {
-  width: 100%;
+  width: 95%;
   padding: 15px 15px;
-  padding-right: 40px; /* space for eye icon */
+  padding-right: 0px; 
   font-size: 14px;
-  border: 1px solid #555555; /* default light black border */
+  border: 1px solid #555555; 
   border-radius: 8px;
   outline: none;
   transition:
@@ -132,7 +130,7 @@ html {
   transform: translateY(-50%);
   pointer-events: none;
   display: flex;
-  color: #555555; /* default label color = black */
+  color: #555555; 
   transition: all 0.3s;
 }
 
@@ -148,7 +146,7 @@ html {
 .input-box input.ng-dirty ~ label span {
   transform: translateY(-22px);
   font-size: 12px;
-  color: #ff6600; /* theme color when floating */
+  color: #ff6600; 
 }
 
 /* Stagger effect for label letters */

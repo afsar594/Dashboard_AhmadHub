@@ -76,9 +76,9 @@ export class AdminAddProductComponent {
           { colorCodes: '#26acce' },
         ],
 
-        images: [
-          'https://i.pinimg.com/1200x/46/72/0d/46720dacf89fe86096d7157cddbf7ff8.jpg',
-          'https://i.pinimg.com/736x/b9/98/8a/b9988a39dab7e7fb741b6e8febfb57f1.jpg',
+        itemImages: [
+          {imgPaths:'https://i.pinimg.com/1200x/46/72/0d/46720dacf89fe86096d7157cddbf7ff8.jpg'},
+          {imgPaths:'https://i.pinimg.com/736x/b9/98/8a/b9988a39dab7e7fb741b6e8febfb57f1.jpg'},
         ],
         createdDate: new Date(),
       },
@@ -106,10 +106,10 @@ export class AdminAddProductComponent {
           { colorCodes: '#e41665' },
           { colorCodes: '#d426e4' },
         ],
-        images: [
-          'https://i.pinimg.com/1200x/09/1f/f3/091ff3982274db868af8175bcb12fd6a.jpg',
-          'https://i.pinimg.com/736x/92/bb/a3/92bba38a680b10ef7110e94841c85208.jpg',
-          'https://i.pinimg.com/1200x/4c/08/b6/4c08b6bb54e1bf7b7ce431ec82835e22.jpg',
+        itemImages: [
+          {imgPaths:'https://i.pinimg.com/1200x/09/1f/f3/091ff3982274db868af8175bcb12fd6a.jpg'},
+          {imgPaths:'https://i.pinimg.com/736x/92/bb/a3/92bba38a680b10ef7110e94841c85208.jpg'},
+          {imgPaths:'https://i.pinimg.com/1200x/4c/08/b6/4c08b6bb54e1bf7b7ce431ec82835e22.jpg'},
         ],
         createdDate: new Date(),
       },
@@ -138,8 +138,8 @@ export class AdminAddProductComponent {
           { colorCodes: '#1be436' },
           { colorCodes: '#865467' },
         ],
-        images: [
-          'https://i.pinimg.com/1200x/c4/13/55/c4135537d9c8125ffcaa728d01951da2.jpg',
+        itemImages: [
+        {imgPaths:'https://i.pinimg.com/1200x/c4/13/55/c4135537d9c8125ffcaa728d01951da2.jpg'},
         ],
         createdDate: new Date(),
       },

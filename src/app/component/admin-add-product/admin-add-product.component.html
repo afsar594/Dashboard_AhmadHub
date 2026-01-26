@@ -208,19 +208,22 @@
               {{ c.sizeNames }}
             </div>
           </td>
-          <td class="color-display">
+          <td >
+            <div class="color-display">
             <div
               *ngFor="let c of p?.itemColors"
               class="color-dot-table"
               [style.background]="c.colorCodes"
             ></div>
-          </td>
-          <td>
-            <div *ngFor="let img of p.itemImages">
-              <img [src]="img.imgPaths" class="product-img" />
             </div>
           </td>
           <td>
+  <div *ngFor="let img of p.itemImages">
+    <img [src]="img.imgPaths" class="product-img" />
+  </div>
+</td>
+          <td>
+            <div  class="btn-group">
             <button class="small-btn" (click)="EditProduct(p)">Edit</button>
             <button class="small-btn cancel" (click)="DeleteProduct(p)">
               Delete
@@ -232,6 +235,7 @@
             >
               {{ p.status ? "Active" : "Inactive" }}
             </button>
+            </div>
           </td>
         </tr>
       </tbody>
