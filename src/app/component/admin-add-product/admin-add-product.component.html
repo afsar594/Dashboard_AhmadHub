@@ -28,7 +28,7 @@
 
     <!-- SIZES -->
     <div class="size-box">
-      <span class="size-title">Sizes:</span>
+      <span style="color: white;">Sizes:</span>
       <div class="size-option">
         <label
           ><input
@@ -194,7 +194,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let p of DataItem">
+        <tr *ngFor="let p of filteredData">
           <td>{{ p.itemName }}</td>
           <td>{{ p.brand }}</td>
           <td class="desc-col" style="text-align: left">{{ p.detail }}</td>

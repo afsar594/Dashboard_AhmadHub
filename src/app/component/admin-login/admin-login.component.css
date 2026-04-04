@@ -1,21 +1,12 @@
-/* ===== Layout Same ===== */
-/* body,
-html {
+/* ===== Login Page - AhmedHub Theme ===== */
+body, html {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   height: 100%;
   width: 100%;
-} */
-.login-card {
-  background: #ffffff;
-  padding: 50px 35px;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* soft shadow */
-  max-width: 450px;
-  width: 100%;
-  text-align: center;
-  position: relative;
+  background: #1E293B; /* main background */
+  color: #E0E7FF;
 }
 
 .login-container {
@@ -23,57 +14,24 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
 }
 
-.password-box {
-  position: relative;
-}
-
-/* .password-box input {
-  width: 100%;
-  padding-right: 40px; 
-  padding-left: 10px;
-  height: 45px;
-  font-size: 14px;
-  border: 1px solid #ff6600;
-  border-radius: 8px;
-  outline: none;
-} */
-
-.password-box input:focus {
-  border-color: #ff9933;
-  /* box-shadow: 0 0 10px rgba(255,102,0,0.3); */
-}
-
-/* Eye icon inside input */
-.show-password {
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  user-select: none;
-  /* background: #ffffff; */
-}
-
-/* ===== Login Card ===== */
 .login-card {
-  background: #fff;
+  background: #273449; /* card background - darker */
   padding: 50px 35px;
   border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
   max-width: 450px;
   width: 100%;
   text-align: center;
   position: relative;
 }
 
-/* ===== Login Heading ===== */
 .login-card h2 {
   font-size: 30px;
   font-weight: 700;
-  color: #ff6600; /* theme color */
+  color: #00F5D4; /* AhmedHub accent color */
   margin-bottom: 40px;
   text-align: center;
 }
@@ -85,44 +43,22 @@ html {
 }
 
 .input-box input {
-  width: 100%;
-  padding: 15px 15px;
-  border: 1px solid #555555; 
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s;
-}
-
-.input-box input:focus ~ label span,
-.input-box input.ng-dirty ~ label span {
-  color: #ff6600; 
-  transform: translateY(-22px);
-  font-size: 12px;
-}
-
-/* ===== Label inside input ===== */
-/* ===== Input Boxes Default ===== */
-.input-box input {
   width: 95%;
   padding: 15px 15px;
-  padding-right: 0px; 
   font-size: 14px;
-  border: 1px solid #555555; 
+  border: 1px solid #555555;
   border-radius: 8px;
   outline: none;
-  transition:
-    border-color 0.3s,
-    box-shadow 0.3s;
+  transition: all 0.3s;
+  background: #1E293B; /* input bg dark */
+  color: #E0E7FF;
 }
 
-/* ===== Input Focus / Click ===== */
-.input-box input:focus {
-  border-color: #ff6600; /* theme color border */
-  /* box-shadow: 0 0 10px rgba(255, 102, 0, 0.15); */
+.input-box input::placeholder {
+  color: #94A3B8;
 }
 
-/* ===== Floating Label ===== */
+/* Floating label */
 .input-box label {
   position: absolute;
   left: 15px;
@@ -130,93 +66,98 @@ html {
   transform: translateY(-50%);
   pointer-events: none;
   display: flex;
-  color: #555555; 
+  color: #94A3B8;
   transition: all 0.3s;
 }
 
-/* ===== Each letter (stagger effect optional) ===== */
 .input-box label span {
-  background: #fff;
+  background: #273449;
   padding: 0 2px;
   transition: 0.3s;
 }
 
-/* ===== When Input Focused or Filled ===== */
 .input-box input:focus ~ label span,
 .input-box input.ng-dirty ~ label span {
   transform: translateY(-22px);
   font-size: 12px;
-  color: #ff6600; 
-}
-
-/* Stagger effect for label letters */
-.input-box label span:nth-child(1) {
-  transition-delay: 0ms;
-}
-.input-box label span:nth-child(2) {
-  transition-delay: 50ms;
-}
-.input-box label span:nth-child(3) {
-  transition-delay: 100ms;
-}
-.input-box label span:nth-child(4) {
-  transition-delay: 150ms;
-}
-.input-box label span:nth-child(5) {
-  transition-delay: 200ms;
-}
-.input-box label span:nth-child(6) {
-  transition-delay: 250ms;
-}
-.input-box label span:nth-child(7) {
-  transition-delay: 300ms;
-}
-.input-box label span:nth-child(8) {
-  transition-delay: 350ms;
-}
-
-/* ===== Error Messages ===== */
-.error small {
-  color: #e74c3c;
-  font-size: 12px;
-  margin-top: 5px;
-  display: block;
-  text-align: left;
+  color: #00F5D4; /* accent color on focus */
 }
 
 /* ===== Password Eye Icon ===== */
-/* .password-box {
+.password-box {
   position: relative;
 }
 
 .show-password {
   position: absolute;
-  right: 10px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
+  color: #94A3B8;
   user-select: none;
-} */
+}
 
-/* ===== Button ===== */
+/* ===== Options (Remember/Forgot) ===== */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #CBD5E1;
+}
+
+.remember input {
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.forgot {
+  color: #FF4D6D;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+/* ===== Buttons ===== */
 button {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #ff9933, #ff6600); /* gradient button */
+  background: linear-gradient(135deg, #00F5D4, #3B82F6);
   border: none;
   border-radius: 12px;
-  color: #fff;
+  color: #1A2639;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 button:hover {
-  background: linear-gradient(135deg, #ff6600, #ff9933);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #3B82F6, #00F5D4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Error Messages ===== */
+.error small {
+  color: #FF4D6D;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+  text-align: left;
 }
 
 /* ===== Responsive ===== */
@@ -227,5 +168,9 @@ button:hover {
 
   .login-card h2 {
     font-size: 24px;
+  }
+
+  .input-box input {
+    padding: 12px 12px;
   }
 }

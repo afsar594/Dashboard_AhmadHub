@@ -23,8 +23,8 @@ export class WidgetChartComponent {
           {
             label: 'Sales',
             data: this.data,
-            borderColor: '#ff6600',
-            backgroundColor: '#ff660080',
+            borderColor: '#00F5D4',
+            backgroundColor: '#00F5D4',
             borderWidth: 2,
             tension: 0.4,
           },

@@ -1,20 +1,8 @@
-/* =====================================================
-   GLOBAL RESET & SCROLL FIX
-===================================================== */
-* {
-  box-sizing: border-box;
+.product-management-container {
+  background: #273449;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  margin: 0;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  background: #f6f7fb;
-  overflow-x: hidden; /* ❌ horizontal scroll kill */
-}
-
-/* =====================================================
-   MAIN WIDTH CONTROL (ALL IN ONE BOX FEEL)
-===================================================== */
 .title,
 .admin-action,
 .dashboard-grid,
@@ -26,14 +14,13 @@ body {
   margin-right: auto;
 }
 
-/* =====================================================
-   PAGE TITLE
-===================================================== */
 .title {
   font-size: 28px;
   margin: 20px 0 14px;
   text-align: center;
   font-weight: 600;
+  color: #00F5D4;
+  
 }
 
 /* =====================================================
@@ -43,23 +30,26 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background:  #ff6600;
-  color: #fff;
+  background: #1A2639;
+  color: #E2E8F0;
   padding: 14px 18px;
   border-radius: 12px;
   margin: 18px auto 24px;
   cursor: pointer;
   transition: all 0.25s ease;
+  border: 1px solid rgba(0,245,212,0.2);
 }
 
 .admin-action:hover {
-  background: #111 ;
+  background: #1E293B;
+  border-color: #00F5D4;
 }
 
 .admin-action h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
+  color: #00F5D4;
 }
 
 .admin-action p {
@@ -70,10 +60,11 @@ body {
 
 .arrow {
   font-size: 18px;
+  color: #00F5D4;
 }
 
 /* =====================================================
-   DASHBOARD STATS CARDS (COMPACT)
+   DASHBOARD GRID
 ===================================================== */
 .dashboard-grid {
   display: grid;
@@ -82,10 +73,9 @@ body {
   margin-bottom: 22px;
 }
 
-/* ===============================
-   PROFESSIONAL STOCK ALERTS
-================================ */
-
+/* =====================================================
+   STOCK ALERTS
+===================================================== */
 .stock-alerts {
   max-width: 1200px;
   margin: 24px auto;
@@ -94,83 +84,80 @@ body {
   gap: 18px;
 }
 
-/* Base Alert Card */
 .alert {
   padding: 16px 18px;
   border-radius: 14px;
   font-size: 13px;
   line-height: 1.5;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  background: #fff;
+  background: #1E293B;
   border-left: 5px solid transparent;
+  color: #E2E8F0;
 }
 
-/* Title */
 .alert h4 {
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
 }
 
-/* Items */
 .alert div {
   font-size: 12.5px;
   opacity: 0.85;
+  color: white;
 }
 
 /* LOW STOCK */
 .low-stock {
-  border-left-color: #f59e0b;
-  background: linear-gradient(135deg, #fffaf0, #ffffff);
+  border-left-color: #8B5CF6;
 }
 
 .low-stock h4 {
-  color: #b45309;
+  color: #8B5CF6;
 }
 
 /* OUT OF STOCK */
 .out-stock {
-  border-left-color: #ef4444;
-  background: linear-gradient(135deg, #fff5f5, #ffffff);
+  border-left-color: #FF4D6D;
 }
 
 .out-stock h4 {
-  color: #b91c1c;
+  color: #FF4D6D;
 }
 
-
 /* =====================================================
-   CHART SECTIONS (SMALLER & CLEAN)
+   CHART SECTION
 ===================================================== */
 .chart-section {
-  background: #fff;
+  background: #1E293B;
   padding: 16px;
   border-radius: 14px;
   margin-bottom: 22px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: #E2E8F0;
 }
 
 .chart-section h3 {
   font-size: 15px;
   margin-bottom: 6px;
   font-weight: 600;
+  color: #00F5D4;
 }
 
 /* =====================================================
-   TOP SELLING TABLE (COMPACT)
+   TABLE SECTION
 ===================================================== */
 .table-section {
-  background: #fff;
+  background: #1E293B;
   padding: 14px;
   border-radius: 14px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: #E2E8F0;
 }
 
 .table-section h3 {
   font-size: 15px;
   margin-bottom: 10px;
   font-weight: 600;
+  color: #00F5D4;
 }
 
 table {
@@ -180,55 +167,56 @@ table {
 }
 
 thead {
-  background: #ff6600;
-  color: #fff;
+  background: #1A2639;
+  color: #00F5D4;
 }
 
 th, td {
   padding: 8px 10px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #334155;
   text-align: left;
 }
 
 tbody tr:hover {
-  background: #f5f5f5;
+  background: #273449;
 }
-/*CHART CONTAINER (50 / 50)*/
 
+/* =====================================================
+   CHART CARDS
+===================================================== */
 .charts-row {
   max-width: 1200px;
   margin: 0 auto 28px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
-/* Chart Card */
 .chart-card {
-  background: #fff;
-  padding: 16px 16px 12px;
+  background: #1E293B;
+  padding: 10px 10px 8px;
   border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
+  color: #E2E8F0;
 }
 
-/* Heading */
 .chart-card h3 {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 10px;
+  color: #00F5D4;
 }
 
-/* Dynamic height – chart fits inside box */
 .chart-card app-widget-chart {
   width: 100%;
-  flex: 1;                
-  min-height: 220px;      
+  flex: 1;
+  min-height: 220px;
 }
 
-   /* RESPONSIVE */
-
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 @media (max-width: 900px) {
   .charts-row {
     grid-template-columns: 1fr;
@@ -238,7 +226,8 @@ tbody tr:hover {
     min-height: 200px;
   }
 }
-   @media (max-width: 992px) {
+
+@media (max-width: 992px) {
   .dashboard-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -249,11 +238,10 @@ tbody tr:hover {
     grid-template-columns: 1fr;
   }
 
-  @media (max-width: 768px) {
   .stock-alerts {
     grid-template-columns: 1fr;
   }
-}
+
   .admin-action {
     flex-direction: column;
     gap: 8px;

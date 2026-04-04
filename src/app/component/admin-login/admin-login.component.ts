@@ -68,4 +68,14 @@ export class AdminLoginComponent {
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
+
+
+  navigatetodashboard(){
+    this.router.navigate(['dashboard'])
+  }
+
+     forgotPassword() {
+    alert('Please contact admin to reset your password.');
+  }
+
 }

@@ -1,5 +1,5 @@
 <!-- <h2 class="dashboard"  (click)="navigatetoadminproduct()">Admin Product Management</h2>  -->
-
+<div class="product-management-container">
 <h2 class="title">Admin Dashboard</h2>
 
 <div class="admin-action" (click)="navigatetoadminproduct()">
@@ -40,14 +40,14 @@
   *ngIf="lowStockProducts.length || outOfStockProducts.length"
 >
   <div class="alert low-stock" *ngIf="lowStockProducts.length">
-    <h4 style="color: black">⚠ Low Stock Products</h4>
+    <h4 style="color: aqua;">⚠ Low Stock Products</h4>
     <div *ngFor="let p of lowStockProducts">
       {{ p.name }} - Only {{ p.totalQuantity - p.sold }} left
     </div>
   </div>
 
   <div class="alert out-stock" *ngIf="outOfStockProducts.length">
-    <h4 style="color: black">⛔ Out of Stock</h4>
+    <h4 style="color: aqua">⛔ Out of Stock</h4>
 
     <div *ngFor="let p of outOfStockProducts">
       {{ p.name }}
@@ -101,4 +101,5 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>

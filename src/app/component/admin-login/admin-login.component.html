@@ -48,8 +48,17 @@
           <small>Password must be 5 to 8 characters</small>
         </div>
       </div>
+       <!-- REMEMBER + FORGOT -->
+    <div class="options">
+      <label class="remember">
+        <input type="checkbox" />
+        Remember me
+      </label>
 
-      <button type="submit">Login</button>
+      <a class="forgot" (click)="forgotPassword()">Forgot password?</a>
+    </div>
+
+      <button type="submit" (click)="navigatetodashboard()">Login</button>
     </form>
   </div>
 </div>
