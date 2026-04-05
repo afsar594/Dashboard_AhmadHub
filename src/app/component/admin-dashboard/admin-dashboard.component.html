@@ -15,22 +15,31 @@
   <app-widget-card
     title="Total Products"
     [value]="allProduct"
+    titleColor="#FF4D6D"
   ></app-widget-card>
+
   <app-widget-card
     title="Total Sales"
     [value]="stats.totalSales"
+    titleColor="#4CC9F0"
   ></app-widget-card>
+
   <app-widget-card
     title="Daily Sales"
     [value]="stats.dailySales"
+    titleColor="#F72585"
   ></app-widget-card>
+
   <app-widget-card
     title="Weekly Sales"
     [value]="stats.weeklySales"
+    titleColor="#B5179E"
   ></app-widget-card>
+
   <app-widget-card
     title="Monthly Sales"
     [value]="stats.monthlySales"
+    titleColor="#00F5D4"
   ></app-widget-card>
 </div>
 
@@ -40,14 +49,14 @@
   *ngIf="lowStockProducts.length || outOfStockProducts.length"
 >
   <div class="alert low-stock" *ngIf="lowStockProducts.length">
-    <h4 style="color: aqua;">⚠ Low Stock Products</h4>
+    <h4 style="color: #FF4D6D;">⚠ Low Stock Products</h4>
     <div *ngFor="let p of lowStockProducts">
       {{ p.name }} - Only {{ p.totalQuantity - p.sold }} left
     </div>
   </div>
 
   <div class="alert out-stock" *ngIf="outOfStockProducts.length">
-    <h4 style="color: aqua">⛔ Out of Stock</h4>
+    <h4 style="color: #FF4D6D">⛔ Out of Stock</h4>
 
     <div *ngFor="let p of outOfStockProducts">
       {{ p.name }}

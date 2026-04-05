@@ -13,4 +13,5 @@ Chart.register(...registerables);
 export class WidgetCardComponent {
   @Input() title: string = '';
   @Input() value: number | string = '';
+  @Input() titleColor: string = '#ffffff';
 }
