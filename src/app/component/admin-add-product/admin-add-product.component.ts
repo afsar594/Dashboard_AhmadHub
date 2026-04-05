@@ -53,97 +53,97 @@ export class AdminAddProductComponent {
 
     this.filteredData = this.DataItem;
 
-    this.DataItem = [
-      {
-        itemId: 1,
-        itemName: 'Cool T-Shirt',
-        brand: 'BrandX',
-        price: 500,
-        oldprice: 700,
-        discount: 29,
-        qty: 20,
-        category: 'Clothing',
-        classifiedId: 3,
-        detail:
-          'High quality cotton t-shirt for young boys. Comfortable and trendy design.',
-        // sizes: ['S', 'M', 'L'],
-        // color: [{ value: '#ff0000' }, { value: '#0000ff' }],
-        itemSizes: [{ sizeNames: 'S' }, { sizeNames: 'M' }, { sizeNames: 'L' }],
+    // this.DataItem = [
+    //   {
+    //     itemId: 1,
+    //     itemName: 'Cool T-Shirt',
+    //     brand: 'BrandX',
+    //     price: 500,
+    //     oldprice: 700,
+    //     discount: 29,
+    //     qty: 20,
+    //     category: 'Clothing',
+    //     classifiedId: 3,
+    //     detail:
+    //       'High quality cotton t-shirt for young boys. Comfortable and trendy design.',
+    //     // sizes: ['S', 'M', 'L'],
+    //     // color: [{ value: '#ff0000' }, { value: '#0000ff' }],
+    //     itemSizes: [{ sizeNames: 'S' }, { sizeNames: 'M' }, { sizeNames: 'L' }],
 
-        itemColors: [
-          { colorCodes: '#ff0000' },
-          { colorCodes: '#0000ff' },
-          { colorCodes: '#26acce' },
-        ],
+    //     itemColors: [
+    //       { colorCodes: '#ff0000' },
+    //       { colorCodes: '#0000ff' },
+    //       { colorCodes: '#26acce' },
+    //     ],
 
-        itemImages: [
-          {imgPaths:'https://i.pinimg.com/1200x/46/72/0d/46720dacf89fe86096d7157cddbf7ff8.jpg'},
-          {imgPaths:'https://i.pinimg.com/736x/b9/98/8a/b9988a39dab7e7fb741b6e8febfb57f1.jpg'},
-        ],
-        createdDate: new Date(),
-      },
-      {
-        itemId: 2,
-        itemName: 'Stylish Jacket',
-        brand: 'BrandY',
-        price: 1200,
-        oldprice: 1500,
-        discount: 20,
-        qty: 10,
-        category: 'Winter Wear',
-        classifiedId: 2,
-        detail:
-          'Warm and stylish jacket suitable for young girls. Perfect for winter season.',
-        itemSizes: [
-          { sizeNames: 'S' },
-          { sizeNames: 'L' },
-          { sizeNames: 'XL' },
-        ],
+    //     itemImages: [
+    //       {imgPaths:'https://i.pinimg.com/1200x/46/72/0d/46720dacf89fe86096d7157cddbf7ff8.jpg'},
+    //       {imgPaths:'https://i.pinimg.com/736x/b9/98/8a/b9988a39dab7e7fb741b6e8febfb57f1.jpg'},
+    //     ],
+    //     createdDate: new Date(),
+    //   },
+    //   {
+    //     itemId: 2,
+    //     itemName: 'Stylish Jacket',
+    //     brand: 'BrandY',
+    //     price: 1200,
+    //     oldprice: 1500,
+    //     discount: 20,
+    //     qty: 10,
+    //     category: 'Winter Wear',
+    //     classifiedId: 2,
+    //     detail:
+    //       'Warm and stylish jacket suitable for young girls. Perfect for winter season.',
+    //     itemSizes: [
+    //       { sizeNames: 'S' },
+    //       { sizeNames: 'L' },
+    //       { sizeNames: 'XL' },
+    //     ],
 
-        itemColors: [
-          { colorCodes: '#ff0000' },
-          { colorCodes: '#0000ff' },
-          { colorCodes: '#e41665' },
-          { colorCodes: '#d426e4' },
-        ],
-        itemImages: [
-          {imgPaths:'https://i.pinimg.com/1200x/09/1f/f3/091ff3982274db868af8175bcb12fd6a.jpg'},
-          {imgPaths:'https://i.pinimg.com/736x/92/bb/a3/92bba38a680b10ef7110e94841c85208.jpg'},
-          {imgPaths:'https://i.pinimg.com/1200x/4c/08/b6/4c08b6bb54e1bf7b7ce431ec82835e22.jpg'},
-        ],
-        createdDate: new Date(),
-      },
-      {
-        itemId: 3,
-        itemName: 'Kids Sneakers',
-        brand: 'BrandZ',
-        price: 800,
-        oldprice: 1000,
-        discount: 20,
-        qty: 15,
-        category: 'Footwear',
-        classifiedId: 1,
-        detail:
-          'Comfortable sneakers for kids. Colorful design and durable material.',
-        itemSizes: [
-          { sizeNames: 'S' },
-          { sizeNames: 'M' },
-          { sizeNames: 'XL' },
-        ],
+    //     itemColors: [
+    //       { colorCodes: '#ff0000' },
+    //       { colorCodes: '#0000ff' },
+    //       { colorCodes: '#e41665' },
+    //       { colorCodes: '#d426e4' },
+    //     ],
+    //     itemImages: [
+    //       {imgPaths:'https://i.pinimg.com/1200x/09/1f/f3/091ff3982274db868af8175bcb12fd6a.jpg'},
+    //       {imgPaths:'https://i.pinimg.com/736x/92/bb/a3/92bba38a680b10ef7110e94841c85208.jpg'},
+    //       {imgPaths:'https://i.pinimg.com/1200x/4c/08/b6/4c08b6bb54e1bf7b7ce431ec82835e22.jpg'},
+    //     ],
+    //     createdDate: new Date(),
+    //   },
+    //   {
+    //     itemId: 3,
+    //     itemName: 'Kids Sneakers',
+    //     brand: 'BrandZ',
+    //     price: 800,
+    //     oldprice: 1000,
+    //     discount: 20,
+    //     qty: 15,
+    //     category: 'Footwear',
+    //     classifiedId: 1,
+    //     detail:
+    //       'Comfortable sneakers for kids. Colorful design and durable material.',
+    //     itemSizes: [
+    //       { sizeNames: 'S' },
+    //       { sizeNames: 'M' },
+    //       { sizeNames: 'XL' },
+    //     ],
 
-        itemColors: [
-          { colorCodes: '#ff0000' },
-          { colorCodes: '#0000ff' },
-          { colorCodes: '#2b1a1a' },
-          { colorCodes: '#1be436' },
-          { colorCodes: '#865467' },
-        ],
-        itemImages: [
-        {imgPaths:'https://i.pinimg.com/1200x/c4/13/55/c4135537d9c8125ffcaa728d01951da2.jpg'},
-        ],
-        createdDate: new Date(),
-      },
-    ];
+    //     itemColors: [
+    //       { colorCodes: '#ff0000' },
+    //       { colorCodes: '#0000ff' },
+    //       { colorCodes: '#2b1a1a' },
+    //       { colorCodes: '#1be436' },
+    //       { colorCodes: '#865467' },
+    //     ],
+    //     itemImages: [
+    //     {imgPaths:'https://i.pinimg.com/1200x/c4/13/55/c4135537d9c8125ffcaa728d01951da2.jpg'},
+    //     ],
+    //     createdDate: new Date(),
+    //   },
+    // ];
 
     this.filteredData = [...this.DataItem];
 
@@ -316,6 +316,7 @@ export class AdminAddProductComponent {
       qty: Number(val.quantity),
       img: '',
       detail: val.description,
+      saleCode:1,
       color: val.colors?.map((c: any) => c.value).join(','),
 
       classifiedId:
@@ -439,7 +440,11 @@ export class AdminAddProductComponent {
     this.api.getItemsAll().subscribe((res: any) => {
       if (res.isSuccess) {
         this.DataItem = res?.data;
+            this.filteredData = [...this.DataItem];
+
         console.log('dataTime', this.DataItem);
+                console.log(' this.filteredData', this.filteredData);
+
       }
     });
   }
