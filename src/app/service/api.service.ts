@@ -18,7 +18,7 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}Item?id=${id}`);
   }
   getItemsAll() {
-    return this.http.get(`${this.baseUrl}Item`);
+    return this.http.get(`${this.baseUrl}Item/dashboardlist`);
   }
 
   saveItems(data: any) {

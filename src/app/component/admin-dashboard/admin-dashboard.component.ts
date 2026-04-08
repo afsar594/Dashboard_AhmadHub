@@ -90,7 +90,8 @@ export class AdminDashboardComponent {
   }
   getAllProduch() {
     this.api.getItemsAll().subscribe((res: any) => {
-      this.allProduct = res.data.length;
+      this.allProduct = res.data;
+
     });
   }
 }
