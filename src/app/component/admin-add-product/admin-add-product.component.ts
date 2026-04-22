@@ -188,67 +188,87 @@ export class AdminAddProductComponent {
     event.preventDefault();
   }
 
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    if (!event.dataTransfer) return;
-    this.processFiles(event.dataTransfer.files);
-  }
+  singleFile!: File;
+multipleFiles: File[] = [];
 
-  maxVideoSize = 5 * 1024 * 1024;
-  maxVideoDuration = 30;
-  videos: string[] = [];
+onFileSelect(event: any) {
+  const files: FileList = event.target.files;
+debugger
+  Array.from(files).forEach((file: File, index: number) => {
 
-  onFileSelect(event: any) {
-    const files: FileList = event.target.files;
-    this.processFiles(files);
-    event.target.value = '';
-  }
+    // ✅ FIRST FILE = SINGLE IMAGE
+    if (index === 0) {
+      this.singleFile = file;
+    }
 
-  processFiles(files: FileList) {
-    Array.from(files).forEach((file) => {
-      // ================= IMAGE =================
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.images.push(this.fb.control(reader.result));
-        };
-        reader.readAsDataURL(file);
-      }
+    // ✅ ALL FILES = MULTIPLE IMAGES
+    this.multipleFiles.push(file);
+  });
 
-      // ================= VIDEO =================
-      if (file.type.startsWith('video/')) {
-        // ❌ size check
-        if (file.size > this.maxVideoSize) {
-          alert('Video must be 5 MB or less');
-          return;
-        }
+  event.target.value = '';
+}
 
-        const videoElement = document.createElement('video');
-        videoElement.preload = 'metadata';
+  // onDrop(event: DragEvent) {
+  //   event.preventDefault();
+  //   if (!event.dataTransfer) return;
+  //   this.processFiles(event.dataTransfer.files);
+  // }
 
-        videoElement.onloadedmetadata = () => {
-          window.URL.revokeObjectURL(videoElement.src);
+  // maxVideoSize = 5 * 1024 * 1024;
+  // maxVideoDuration = 30;
+  // videos: string[] = [];
 
-          // ❌ duration check
-          if (videoElement.duration > this.maxVideoDuration) {
-            alert('Video duration must be 30 seconds or less');
-            return;
-          }
+  // onFileSelect(event: any) {
+  //   const files: FileList = event.target.files;
+  //   this.processFiles(files);
+  //   event.target.value = '';
+  // }
 
-          // ✅ valid video
-          const reader = new FileReader();
-          reader.onload = () => {
-            this.productForm.patchValue({
-              video: reader.result,
-            });
-          };
-          reader.readAsDataURL(file);
-        };
+  // processFiles(files: FileList) {
+  //   Array.from(files).forEach((file) => {
+  //     // ================= IMAGE =================
+  //     if (file.type.startsWith('image/')) {
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         this.images.push(this.fb.control(reader.result));
+  //       };
+  //       reader.readAsDataURL(file);
+  //     }
 
-        videoElement.src = URL.createObjectURL(file);
-      }
-    });
-  }
+  //     // ================= VIDEO =================
+  //     if (file.type.startsWith('video/')) {
+  //       // ❌ size check
+  //       if (file.size > this.maxVideoSize) {
+  //         alert('Video must be 5 MB or less');
+  //         return;
+  //       }
+
+  //       const videoElement = document.createElement('video');
+  //       videoElement.preload = 'metadata';
+
+  //       videoElement.onloadedmetadata = () => {
+  //         window.URL.revokeObjectURL(videoElement.src);
+
+  //         // ❌ duration check
+  //         if (videoElement.duration > this.maxVideoDuration) {
+  //           alert('Video duration must be 30 seconds or less');
+  //           return;
+  //         }
+
+  //         // ✅ valid video
+  //         const reader = new FileReader();
+  //         reader.onload = () => {
+  //           this.productForm.patchValue({
+  //             video: reader.result,
+  //           });
+  //         };
+  //         reader.readAsDataURL(file);
+  //       };
+
+  //       videoElement.src = URL.createObjectURL(file);
+  //     }
+  //   });
+  // }
 
   removeImage(index: number) {
     const ok = window.confirm('Are you sure you want to remove this image?');
@@ -304,54 +324,53 @@ export class AdminAddProductComponent {
     });
   }
 
-  addProduct() {
-    const val = this.productForm.value;
+ addProduct() {
+  const val = this.productForm.value;
+debugger
+  const payload = {
+    ItemId: this.SaveData ? this.SaveData.itemId : 0,
+    ItemName: val.name,
+    Price: Number(val.price),
+    OldPrice: Number(val.oldprice),
+    Discount: Number(val.discount),
+    Qty: Number(val.quantity),
+    Detail: val.description,
+    saleCode: 1,
 
-    const payload = {
-      itemId: this.SaveData ? this.SaveData.itemId : 0,
-      itemName: val.name,
-      price: Number(val.price),
-      oldPrice: Number(val.oldprice),
-      discount: Number(val.discount),
-      qty: Number(val.quantity),
-      img: '',
-      detail: val.description,
-      saleCode:1,
-      color: val.colors?.map((c: any) => c.value).join(','),
+    Color: val.colors?.map((c: any) => c.value).join(','),
 
-      classifiedId:
-        val.productCategory === 'Kids'
-          ? 1
-          : val.productCategory === 'Young Girl'
-            ? 2
-            : 3,
+    ClassifiedId:
+      val.productCategory === 'Kids'
+        ? 1
+        : val.productCategory === 'Young Girl'
+        ? 2
+        : 3,
 
-      category: val.itemCategory,
-      brand: val.brand,
-      createdDate: new Date(),
+    Category: val.itemCategory,
+    Brand: val.brand,
+  CreatedDate: new Date().toISOString(),
 
-      itemColors: val.colors?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        colorCodes: x.value,
-      })),
+    // ✅ COLORS
+    ItemColors: val.colors?.map((x: any) => ({
+      ColorCode: x.value
+    })),
 
-      itemSizes: val.sizes?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        sizeNames: x,
-      })),
+    // ✅ SIZES
+    ItemSizes: val.sizes?.map((x: any) => ({
+      SizeName: x
+    })),
 
-      itemImages: val.images?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        imgPaths: x,
-      })),
-    };
+    // ❌ REMOVE THIS
+    // itemImages: []
+    
+    // ✅ FILES ADD
+    ImageFile: this.singleFile,
+    ImageFiles: this.multipleFiles
+  };
 
-    if (payload.itemId === 0) this.saveProduct(payload);
-    else this.updateProduct(payload);
-  }
+  if (payload.ItemId === 0) this.saveProduct(payload);
+  else this.updateProduct(payload);
+}
 
   saveProduct(payload: any) {
     this.api.saveItems(payload).subscribe(() => {
