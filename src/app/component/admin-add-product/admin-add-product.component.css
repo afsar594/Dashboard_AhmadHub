@@ -382,29 +382,81 @@ td img {
 /* Buttons inside table */
 /* ===== Table Action Buttons ===== */
 
-/* ===== Search Box ===== */
 .search-box {
+  position: relative;
   width: 100%;
-  margin: 10px 0;
 }
 
-/* ===== Search Input ===== */
-.search-box input[type="search"] {
-  width: 260px;
-  padding: 7px 12px;
-  font-size: 13px;
-  border-radius: 6px;
-  border: 1px solid #333F55;
-  background-color: #1E293B;
+.search-box input {
+  width: 40%;
+  padding: 12px 45px 12px 15px; /* right space for icon */
+  border-radius: 30px;
+  border: 2px solid #000;
   outline: none;
-  transition: all 0.2s ease;
-  margin-bottom: 10px;
+  background: transparent;
   color: white;
+  font-size: 14px;
 }
 
-/* Placeholder */
-.search-box input[type="search"]::placeholder {
-  color: #9ca3af;
+.color-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* custom picker row */
+.custom-color {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* preset palette */
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.color-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+
+.color-box:hover {
+  transform: scale(1.2);
+}
+
+/* 🔥 Right circular icon */
+.search-box i {
+  position: absolute;
+  right: 628px;
+  top: 25%;
+  transform: translateY(-50%);
+  
+  background: #000;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+/* focus only */
+.search-box input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
 }
 
 /* Focus state */

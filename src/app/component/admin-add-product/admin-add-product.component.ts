@@ -197,23 +197,24 @@ export class AdminAddProductComponent {
   maxVideoSize = 5 * 1024 * 1024;
   maxVideoDuration = 30;
   videos: string[] = [];
-
-  onFileSelect(event: any) {
-    const files: FileList = event.target.files;
-    this.processFiles(files);
-    event.target.value = '';
-  }
+colorsList: string[] = [];
 
   processFiles(files: FileList) {
-    Array.from(files).forEach((file) => {
-      // ================= IMAGE =================
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.images.push(this.fb.control(reader.result));
-        };
-        reader.readAsDataURL(file);
-      }
+
+  Array.from(files).forEach((file) => {
+
+    // ================= IMAGE =================
+    if (file.type.startsWith('image/')) {
+
+      // 🚫 extra safety (even drag-drop bypass)
+      if (!this.checkImageLimit(1)) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.images.push(this.fb.control(reader.result));
+      };
+      reader.readAsDataURL(file);
+    }
 
       // ================= VIDEO =================
       if (file.type.startsWith('video/')) {
@@ -250,6 +251,25 @@ export class AdminAddProductComponent {
     });
   }
 
+  // onFileSelect(event: any) {
+  //   const files: FileList = event.target.files;
+  //   this.processFiles(files);
+  //   event.target.value = '';
+  // }
+
+  onFileSelect(event: any) {
+  const files: FileList = event.target.files;
+
+  // 🚫 block if total exceeds 5
+  if (!this.checkImageLimit(files.length)) {
+    event.target.value = '';
+    return;
+  }
+
+  this.processFiles(files);
+  event.target.value = '';
+}
+
   removeImage(index: number) {
     const ok = window.confirm('Are you sure you want to remove this image?');
     if (!ok) return;
@@ -272,16 +292,37 @@ export class AdminAddProductComponent {
   }
 
   // Colors
-  addColor() {
-    const color = this.productForm.get('currentColor')?.value;
-    if (!color) return;
-    if (this.colors.value.some((c: any) => c.value === color)) return;
-    this.colors.push(this.fb.group({ value: color }));
-    this.productForm.get('currentColor')?.reset();
-  }
+  presetColors: string[] = [
+  '#000000', '#ffffff', '#ff0000', '#00ff00',
+  '#0000ff', '#ff9800', '#9c27b0', '#e91e63',
+  '#795548', '#607d8b'
+];
+
+// 🎯 Custom color add (input se)
+addCustomColor() {
+  const color = this.productForm.get('currentColor')?.value;
+
+  if (!color) return;
+
+  if (this.colors.value.some((c: any) => c.value === color)) return;
+
+  this.colors.push(this.fb.group({ value: color }));
+  console.log('Selected Colors:', this.colorsList);
+
+  this.productForm.get('currentColor')?.reset();
+}
+
+// 🎨 Preset color click
+selectPresetColor(color: string) {
+  if (this.colors.value.some((c: any) => c.value === color)) return;
+
+  this.colors.push(this.fb.group({ value: color }));
+  console.log('Colors List:', this.colorsList);
+}
 
   removeColor(index: number) {
     this.colors.removeAt(index);
+    console.log('After Remove:', this.colorsList);
   }
 
   // Auto Discount Calculation
@@ -304,54 +345,116 @@ export class AdminAddProductComponent {
     });
   }
 
+  // addProduct() {
+  //   const val = this.productForm.value;
+
+  //   const payload = {
+  //     itemId: this.SaveData ? this.SaveData.itemId : 0,
+  //     itemName: val.name,
+  //     price: Number(val.price),
+  //     oldPrice: Number(val.oldprice),
+  //     discount: Number(val.discount),
+  //     qty: Number(val.quantity),
+  //     img: '',
+  //     detail: val.description,
+  //     saleCode:1,
+  //     color: val.colors?.map((c: any) => c.value).join(','),
+
+  //     classifiedId:
+  //       val.productCategory === 'Kids'
+  //         ? 1
+  //         : val.productCategory === 'Young Girl'
+  //           ? 2
+  //           : 3,
+
+  //     category: val.itemCategory,
+  //     brand: val.brand,
+  //     createdDate: new Date(),
+
+  //     itemColors: val.colors?.map((x: any) => ({
+  //       id: x.id ?? 0,
+  //       itemId: 0,
+  //       colorCodes: x.value,
+  //     })),
+
+  //     itemSizes: val.sizes?.map((x: any) => ({
+  //       id: x.id ?? 0,
+  //       itemId: 0,
+  //       sizeNames: x,
+  //     })),
+
+  //     itemImages: val.images?.map((x: any) => ({
+  //       id: x.id ?? 0,
+  //       itemId: 0,
+  //       imgPaths: x,
+  //     })),
+  //   };
+
+  //   if (payload.itemId === 0) this.saveProduct(payload);
+  //   else this.updateProduct(payload);
+  // }
+
   addProduct() {
-    const val = this.productForm.value;
+     console.log('FINAL COLORS:', this.colorsList); 
+  const val = this.productForm.value;
 
-    const payload = {
-      itemId: this.SaveData ? this.SaveData.itemId : 0,
-      itemName: val.name,
-      price: Number(val.price),
-      oldPrice: Number(val.oldprice),
-      discount: Number(val.discount),
-      qty: Number(val.quantity),
-      img: '',
-      detail: val.description,
-      saleCode:1,
-      color: val.colors?.map((c: any) => c.value).join(','),
+  const formData = new FormData();
 
-      classifiedId:
-        val.productCategory === 'Kids'
-          ? 1
-          : val.productCategory === 'Young Girl'
-            ? 2
-            : 3,
+  // ================= TEXT DATA =================
+  formData.append('itemId', this.SaveData ? this.SaveData.itemId : '0');
+  formData.append('itemName', val.name);
+  formData.append('price', val.price);
+  formData.append('oldPrice', val.oldprice);
+  formData.append('discount', val.discount);
+  formData.append('qty', val.quantity);
+  formData.append('detail', val.description);
+  formData.append('category', val.itemCategory);
+  formData.append('brand', val.brand);
+  formData.append('classifiedId',
+    val.productCategory === 'Kids'
+      ? '1'
+      : val.productCategory === 'Young Girl'
+        ? '2'
+        : '3'
+  );
 
-      category: val.itemCategory,
-      brand: val.brand,
-      createdDate: new Date(),
+  // ================= COLORS =================
+  formData.append(
+    'colors',
+    JSON.stringify(val.colors?.map((c: any) => c.value))
+  );
 
-      itemColors: val.colors?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        colorCodes: x.value,
-      })),
+  // ================= SIZES =================
+  formData.append(
+    'sizes',
+    JSON.stringify(val.sizes)
+  );
 
-      itemSizes: val.sizes?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        sizeNames: x,
-      })),
+  // ================= IMAGES (FILES) =================
+  this.images.controls.forEach((img: any, index: number) => {
+    formData.append('images', img.value);
+  });
 
-      itemImages: val.images?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        imgPaths: x,
-      })),
-    };
-
-    if (payload.itemId === 0) this.saveProduct(payload);
-    else this.updateProduct(payload);
+  // ================= VIDEO =================
+  if (val.video) {
+    formData.append('video', val.video);
   }
+
+  // ================= API CALL =================
+  if (!this.SaveData) {
+    this.api.saveItems(formData).subscribe(() => this.getAll());
+  } else {
+    this.api.UpdateItems(this.SaveData.itemId, formData).subscribe(() => this.getAll());
+  }
+}
+
+private checkImageLimit(count: number = 1): boolean {
+  if (this.images.length + count > 5) {
+    alert('You can upload maximum 5 images only');
+    return false;
+  }
+  return true;
+}
 
   saveProduct(payload: any) {
     this.api.saveItems(payload).subscribe(() => {

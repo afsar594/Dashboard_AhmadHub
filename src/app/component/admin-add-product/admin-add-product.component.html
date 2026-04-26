@@ -123,12 +123,28 @@
     </div>
 
     <!-- COLOR PICKER -->
-    <div class="color-input">
-      <input type="color" formControlName="currentColor" />
-      <button type="button" class="small-btn" (click)="addColor()">
-        Add Color
-      </button>
-    </div>
+    <!-- COLOR PICKER (CUSTOM + PRESET) -->
+<div class="color-section">
+
+  <!-- 🎨 Custom Color Picker -->
+  <div class="custom-color">
+    <input type="color" formControlName="currentColor" />
+    <button type="button" class="small-btn" (click)="addCustomColor()">
+      Add
+    </button>
+  </div>
+
+  <!-- 🎯 Preset Colors -->
+  <div class="color-palette">
+    <div
+      class="color-box"
+      *ngFor="let c of presetColors"
+      [style.background]="c"
+      (click)="selectPresetColor(c)"
+    ></div>
+  </div>
+
+</div>
 
     <!-- COLOR CHIPS -->
     <div class="color-list">
@@ -171,11 +187,9 @@
 
   <!-- PRODUCT TABLE -->
   <div class="search-box">
-    <input
-      type="search"
-      [formControl]="searchControl"
-      placeholder="Search product..."
-    />
+  <input type="text" [formControl]="searchControl" />
+  <i class="fa-solid fa-magnifying-glass"></i>
+
     <table>
       <thead>
         <tr>
