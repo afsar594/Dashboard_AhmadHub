@@ -197,78 +197,58 @@ export class AdminAddProductComponent {
   maxVideoSize = 5 * 1024 * 1024;
   maxVideoDuration = 30;
   videos: string[] = [];
-colorsList: string[] = [];
+
+  onFileSelect(event: any) {
+    const files: FileList = event.target.files;
+    this.processFiles(files);
+    event.target.value = '';
+  }
 
   processFiles(files: FileList) {
-
-  Array.from(files).forEach((file) => {
-
-    // ================= IMAGE =================
-    if (file.type.startsWith('image/')) {
-
-      // 🚫 extra safety (even drag-drop bypass)
-      if (!this.checkImageLimit(1)) return;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.images.push(this.fb.control(reader.result));
-      };
-      reader.readAsDataURL(file);
-    }
-
-      // ================= VIDEO =================
-      if (file.type.startsWith('video/')) {
-        // ❌ size check
-        if (file.size > this.maxVideoSize) {
-          alert('Video must be 5 MB or less');
-          return;
-        }
-
-        const videoElement = document.createElement('video');
-        videoElement.preload = 'metadata';
-
-        videoElement.onloadedmetadata = () => {
-          window.URL.revokeObjectURL(videoElement.src);
-
-          // ❌ duration check
-          if (videoElement.duration > this.maxVideoDuration) {
-            alert('Video duration must be 30 seconds or less');
-            return;
-          }
-
-          // ✅ valid video
-          const reader = new FileReader();
-          reader.onload = () => {
-            this.productForm.patchValue({
-              video: reader.result,
-            });
-          };
-          reader.readAsDataURL(file);
+    Array.from(files).forEach((file) => {
+      // ================= IMAGE =================
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.images.push(this.fb.control(reader.result));
         };
+        reader.readAsDataURL(file);
+      }
+
+  //     // ================= VIDEO =================
+  //     if (file.type.startsWith('video/')) {
+  //       // ❌ size check
+  //       if (file.size > this.maxVideoSize) {
+  //         alert('Video must be 5 MB or less');
+  //         return;
+  //       }
+
+  //       const videoElement = document.createElement('video');
+  //       videoElement.preload = 'metadata';
+
+  //       videoElement.onloadedmetadata = () => {
+  //         window.URL.revokeObjectURL(videoElement.src);
+
+  //         // ❌ duration check
+  //         if (videoElement.duration > this.maxVideoDuration) {
+  //           alert('Video duration must be 30 seconds or less');
+  //           return;
+  //         }
+
+  //         // ✅ valid video
+  //         const reader = new FileReader();
+  //         reader.onload = () => {
+  //           this.productForm.patchValue({
+  //             video: reader.result,
+  //           });
+  //         };
+  //         reader.readAsDataURL(file);
+  //       };
 
         videoElement.src = URL.createObjectURL(file);
       }
     });
   }
-
-  // onFileSelect(event: any) {
-  //   const files: FileList = event.target.files;
-  //   this.processFiles(files);
-  //   event.target.value = '';
-  // }
-
-  onFileSelect(event: any) {
-  const files: FileList = event.target.files;
-
-  // 🚫 block if total exceeds 5
-  if (!this.checkImageLimit(files.length)) {
-    event.target.value = '';
-    return;
-  }
-
-  this.processFiles(files);
-  event.target.value = '';
-}
 
   removeImage(index: number) {
     const ok = window.confirm('Are you sure you want to remove this image?');
@@ -395,66 +375,53 @@ selectPresetColor(color: string) {
   // }
 
   addProduct() {
-     console.log('FINAL COLORS:', this.colorsList); 
-  const val = this.productForm.value;
+    const val = this.productForm.value;
 
-  const formData = new FormData();
+    const payload = {
+      itemId: this.SaveData ? this.SaveData.itemId : 0,
+      itemName: val.name,
+      price: Number(val.price),
+      oldPrice: Number(val.oldprice),
+      discount: Number(val.discount),
+      qty: Number(val.quantity),
+      img: '',
+      detail: val.description,
+      saleCode:1,
+      color: val.colors?.map((c: any) => c.value).join(','),
 
-  // ================= TEXT DATA =================
-  formData.append('itemId', this.SaveData ? this.SaveData.itemId : '0');
-  formData.append('itemName', val.name);
-  formData.append('price', val.price);
-  formData.append('oldPrice', val.oldprice);
-  formData.append('discount', val.discount);
-  formData.append('qty', val.quantity);
-  formData.append('detail', val.description);
-  formData.append('category', val.itemCategory);
-  formData.append('brand', val.brand);
-  formData.append('classifiedId',
-    val.productCategory === 'Kids'
-      ? '1'
-      : val.productCategory === 'Young Girl'
-        ? '2'
-        : '3'
-  );
+      classifiedId:
+        val.productCategory === 'Kids'
+          ? 1
+          : val.productCategory === 'Young Girl'
+            ? 2
+            : 3,
 
-  // ================= COLORS =================
-  formData.append(
-    'colors',
-    JSON.stringify(val.colors?.map((c: any) => c.value))
-  );
+      category: val.itemCategory,
+      brand: val.brand,
+      createdDate: new Date(),
 
-  // ================= SIZES =================
-  formData.append(
-    'sizes',
-    JSON.stringify(val.sizes)
-  );
+      itemColors: val.colors?.map((x: any) => ({
+        id: x.id ?? 0,
+        itemId: 0,
+        colorCodes: x.value,
+      })),
 
-  // ================= IMAGES (FILES) =================
-  this.images.controls.forEach((img: any, index: number) => {
-    formData.append('images', img.value);
-  });
+      itemSizes: val.sizes?.map((x: any) => ({
+        id: x.id ?? 0,
+        itemId: 0,
+        sizeNames: x,
+      })),
 
-  // ================= VIDEO =================
-  if (val.video) {
-    formData.append('video', val.video);
+      itemImages: val.images?.map((x: any) => ({
+        id: x.id ?? 0,
+        itemId: 0,
+        imgPaths: x,
+      })),
+    };
+
+    if (payload.itemId === 0) this.saveProduct(payload);
+    else this.updateProduct(payload);
   }
-
-  // ================= API CALL =================
-  if (!this.SaveData) {
-    this.api.saveItems(formData).subscribe(() => this.getAll());
-  } else {
-    this.api.UpdateItems(this.SaveData.itemId, formData).subscribe(() => this.getAll());
-  }
-}
-
-private checkImageLimit(count: number = 1): boolean {
-  if (this.images.length + count > 5) {
-    alert('You can upload maximum 5 images only');
-    return false;
-  }
-  return true;
-}
 
   saveProduct(payload: any) {
     this.api.saveItems(payload).subscribe(() => {

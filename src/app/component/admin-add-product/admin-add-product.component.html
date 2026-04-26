@@ -92,9 +92,10 @@
     <!-- IMAGE DRAG & DROP -->
     <div
       class="image-dropzone"
-      (drop)="onDrop($event)"
+     
       (dragover)="onDragOver($event)"
     >
+     <!-- (drop)="onDrop($event)" -->
       <p>Drag & drop images here or click to select</p>
       <small>(Images + 1 vedio allowed)</small>
       <input
@@ -106,21 +107,21 @@
     </div>
 
     <!-- IMAGE PREVIEW -->
-    <div class="image-preview-container">
-      <div
-        *ngFor="let img of images.controls; let i = index"
-        class="preview-box"
-      >
-        <img [src]="img.value" />
-        <button type="button" (click)="removeImage(i)">✕</button>
-      </div>
+<div class="image-preview-container">
+  <div
+    *ngFor="let img of images.controls; let i = index"
+    class="preview-box"
+  >
+    <img [src]="img.value" />
+    <button type="button" (click)="removeImage(i)">✕</button>
+  </div>
 
-      <!-- vedio preview -->
-      <div class="preview-box" *ngIf="video">
-        <video [src]="video" controls></video>
-        <span class="remove-btn" (click)="removeVideo()">✕</span>
-      </div>
-    </div>
+  <!-- video preview -->
+  <div class="preview-box" *ngIf="video">
+    <video [src]="video" controls></video>
+    <span class="remove-btn" (click)="removeVideo()">✕</span>
+  </div>
+</div>
 
     <!-- COLOR PICKER -->
     <!-- COLOR PICKER (CUSTOM + PRESET) -->
@@ -162,7 +163,7 @@
         class="small-btn"
         [disabled]="productForm.invalid"
         (click)="addProduct()"
-        *ngIf="!Isbtn"
+      
       >
         Add Product
       </button>
