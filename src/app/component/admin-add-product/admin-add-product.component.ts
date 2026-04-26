@@ -18,18 +18,18 @@ import { CommonModule } from '@angular/common';
   styleUrl: './admin-add-product.component.css',
 })
 export class AdminAddProductComponent {
+    baseUrl = 'https://localhost:44379';
   productForm!: FormGroup;
-  DataItem: any;
+  DataItem: any[] = [];
+  filteredData: any[] = [];
+
   Isbtn: boolean = false;
   SaveData: any;
-  itemColor: any;
-
+selectedFile!: File;
+selectedFiles: File[] = [];
   searchControl = new FormControl('');
-  filteredData: any[] = [];
-  constructor(
-    private fb: FormBuilder,
-    private api: ApiService,
-  ) {}
+
+  constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
@@ -37,142 +37,38 @@ export class AdminAddProductComponent {
       brand: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(1)]],
       oldprice: ['', [Validators.min(0)]],
-      discount: [0, Validators.min(0)],
+      discount: [0],
       quantity: ['', [Validators.required, Validators.min(0)]],
       itemCategory: ['', Validators.required],
       productCategory: ['Young Boy', Validators.required],
       description: ['', Validators.required],
-      images: this.fb.array([], Validators.required),
+      images: this.fb.array([], [Validators.required, Validators.minLength(1)]),
       video: [''],
       sizes: this.fb.array([]),
       currentColor: [''],
       colors: this.fb.array([]),
       status: [true],
     });
+
     this.getAll();
+    this.autoDiscountCalculation();
 
-    this.filteredData = this.DataItem;
-
-    // this.DataItem = [
-    //   {
-    //     itemId: 1,
-    //     itemName: 'Cool T-Shirt',
-    //     brand: 'BrandX',
-    //     price: 500,
-    //     oldprice: 700,
-    //     discount: 29,
-    //     qty: 20,
-    //     category: 'Clothing',
-    //     classifiedId: 3,
-    //     detail:
-    //       'High quality cotton t-shirt for young boys. Comfortable and trendy design.',
-    //     // sizes: ['S', 'M', 'L'],
-    //     // color: [{ value: '#ff0000' }, { value: '#0000ff' }],
-    //     itemSizes: [{ sizeNames: 'S' }, { sizeNames: 'M' }, { sizeNames: 'L' }],
-
-    //     itemColors: [
-    //       { colorCodes: '#ff0000' },
-    //       { colorCodes: '#0000ff' },
-    //       { colorCodes: '#26acce' },
-    //     ],
-
-    //     itemImages: [
-    //       {imgPaths:'https://i.pinimg.com/1200x/46/72/0d/46720dacf89fe86096d7157cddbf7ff8.jpg'},
-    //       {imgPaths:'https://i.pinimg.com/736x/b9/98/8a/b9988a39dab7e7fb741b6e8febfb57f1.jpg'},
-    //     ],
-    //     createdDate: new Date(),
-    //   },
-    //   {
-    //     itemId: 2,
-    //     itemName: 'Stylish Jacket',
-    //     brand: 'BrandY',
-    //     price: 1200,
-    //     oldprice: 1500,
-    //     discount: 20,
-    //     qty: 10,
-    //     category: 'Winter Wear',
-    //     classifiedId: 2,
-    //     detail:
-    //       'Warm and stylish jacket suitable for young girls. Perfect for winter season.',
-    //     itemSizes: [
-    //       { sizeNames: 'S' },
-    //       { sizeNames: 'L' },
-    //       { sizeNames: 'XL' },
-    //     ],
-
-    //     itemColors: [
-    //       { colorCodes: '#ff0000' },
-    //       { colorCodes: '#0000ff' },
-    //       { colorCodes: '#e41665' },
-    //       { colorCodes: '#d426e4' },
-    //     ],
-    //     itemImages: [
-    //       {imgPaths:'https://i.pinimg.com/1200x/09/1f/f3/091ff3982274db868af8175bcb12fd6a.jpg'},
-    //       {imgPaths:'https://i.pinimg.com/736x/92/bb/a3/92bba38a680b10ef7110e94841c85208.jpg'},
-    //       {imgPaths:'https://i.pinimg.com/1200x/4c/08/b6/4c08b6bb54e1bf7b7ce431ec82835e22.jpg'},
-    //     ],
-    //     createdDate: new Date(),
-    //   },
-    //   {
-    //     itemId: 3,
-    //     itemName: 'Kids Sneakers',
-    //     brand: 'BrandZ',
-    //     price: 800,
-    //     oldprice: 1000,
-    //     discount: 20,
-    //     qty: 15,
-    //     category: 'Footwear',
-    //     classifiedId: 1,
-    //     detail:
-    //       'Comfortable sneakers for kids. Colorful design and durable material.',
-    //     itemSizes: [
-    //       { sizeNames: 'S' },
-    //       { sizeNames: 'M' },
-    //       { sizeNames: 'XL' },
-    //     ],
-
-    //     itemColors: [
-    //       { colorCodes: '#ff0000' },
-    //       { colorCodes: '#0000ff' },
-    //       { colorCodes: '#2b1a1a' },
-    //       { colorCodes: '#1be436' },
-    //       { colorCodes: '#865467' },
-    //     ],
-    //     itemImages: [
-    //     {imgPaths:'https://i.pinimg.com/1200x/c4/13/55/c4135537d9c8125ffcaa728d01951da2.jpg'},
-    //     ],
-    //     createdDate: new Date(),
-    //   },
-    // ];
-
-    this.filteredData = [...this.DataItem];
-
+    // ✅ SEARCH FIX
     this.searchControl.valueChanges.subscribe((value) => {
       const search = (value || '').toLowerCase();
 
-      this.filteredData = this.DataItem.filter(
+      this.filteredData = (this.DataItem || []).filter(
         (p: any) =>
           (p.itemName || '').toLowerCase().includes(search) ||
           (p.category || '').toLowerCase().includes(search) ||
-          (p.brand || '').toLowerCase().includes(search),
+          (p.brand || '').toLowerCase().includes(search)
       );
     });
-
-    // 🔹 Dummy ke liye backend ko temporarily comment karo
-
-    this.autoDiscountCalculation();
   }
 
-  //   this.getAll();
-  //   this.autoDiscountCalculation();
-  // }
-
-  // FormArray getters
+  // ================= GETTERS =================
   get images(): FormArray {
     return this.productForm.get('images') as FormArray;
-  }
-  get video(): string {
-    return this.productForm.get('video')?.value;
   }
 
   get colors(): FormArray {
@@ -183,7 +79,12 @@ export class AdminAddProductComponent {
     return this.productForm.get('sizes') as FormArray;
   }
 
-  // Drag & drop images
+  // ✅ FIXED (video error solved)
+  get video(): string {
+    return this.productForm.get('video')?.value;
+  }
+
+  // ================= FILE =================
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
@@ -194,74 +95,74 @@ export class AdminAddProductComponent {
     this.processFiles(event.dataTransfer.files);
   }
 
-  maxVideoSize = 5 * 1024 * 1024;
-  maxVideoDuration = 30;
-  videos: string[] = [];
-
   onFileSelect(event: any) {
     const files: FileList = event.target.files;
     this.processFiles(files);
     event.target.value = '';
   }
 
-  processFiles(files: FileList) {
-    Array.from(files).forEach((file) => {
-      // ================= IMAGE =================
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.images.push(this.fb.control(reader.result));
-        };
-        reader.readAsDataURL(file);
-      }
+processFiles(files: FileList) {
+  Array.from(files).forEach((file) => {
+    if (file.type.startsWith('image/')) {
 
-  //     // ================= VIDEO =================
-  //     if (file.type.startsWith('video/')) {
-  //       // ❌ size check
-  //       if (file.size > this.maxVideoSize) {
-  //         alert('Video must be 5 MB or less');
-  //         return;
-  //       }
+      // ✅ STORE REAL FILE (for API)
+      this.selectedFiles.push(file);
 
-  //       const videoElement = document.createElement('video');
-  //       videoElement.preload = 'metadata';
-
-  //       videoElement.onloadedmetadata = () => {
-  //         window.URL.revokeObjectURL(videoElement.src);
-
-  //         // ❌ duration check
-  //         if (videoElement.duration > this.maxVideoDuration) {
-  //           alert('Video duration must be 30 seconds or less');
-  //           return;
-  //         }
-
-  //         // ✅ valid video
-  //         const reader = new FileReader();
-  //         reader.onload = () => {
-  //           this.productForm.patchValue({
-  //             video: reader.result,
-  //           });
-  //         };
-  //         reader.readAsDataURL(file);
-  //       };
-
-        videoElement.src = URL.createObjectURL(file);
-      }
-    });
-  }
+      // ✅ STORE PREVIEW (for UI)
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.images.push(this.fb.control(reader.result));
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
 
   removeImage(index: number) {
-    const ok = window.confirm('Are you sure you want to remove this image?');
-    if (!ok) return;
-    this.images.removeAt(index);
-  }
-  removeVideo() {
-    const ok = window.confirm('Are you sure you want to remove this video?');
-    if (!ok) return;
-    this.productForm.patchValue({ video: '' });
+    if (confirm('Remove image?')) {
+      this.images.removeAt(index);
+    }
   }
 
-  // Sizes toggle
+  // ✅ FIXED (removeVideo error solved)
+  removeVideo() {
+    if (confirm('Remove video?')) {
+      this.productForm.patchValue({ video: '' });
+    }
+  }
+
+  // ================= COLORS =================
+  presetColors: string[] = [
+    '#000000',
+    '#ffffff',
+    '#ff0000',
+    '#00ff00',
+    '#0000ff',
+    '#ff9800',
+    '#9c27b0',
+    '#e91e63',
+  ];
+
+  addCustomColor() {
+    const color = this.productForm.get('currentColor')?.value;
+    if (!color) return;
+
+    if (this.colors.value.some((c: any) => c.value === color)) return;
+
+    this.colors.push(this.fb.group({ value: color }));
+    this.productForm.get('currentColor')?.reset();
+  }
+
+  selectPresetColor(color: string) {
+    if (this.colors.value.some((c: any) => c.value === color)) return;
+    this.colors.push(this.fb.group({ value: color }));
+  }
+
+  removeColor(index: number) {
+    this.colors.removeAt(index);
+  }
+
+  // ================= SIZE =================
   toggleSize(size: string, event: any) {
     if (event.target.checked) {
       this.sizes.push(this.fb.control(size));
@@ -271,52 +172,13 @@ export class AdminAddProductComponent {
     }
   }
 
-  // Colors
-  presetColors: string[] = [
-  '#000000', '#ffffff', '#ff0000', '#00ff00',
-  '#0000ff', '#ff9800', '#9c27b0', '#e91e63',
-  '#795548', '#607d8b'
-];
-
-// 🎯 Custom color add (input se)
-addCustomColor() {
-  const color = this.productForm.get('currentColor')?.value;
-
-  if (!color) return;
-
-  if (this.colors.value.some((c: any) => c.value === color)) return;
-
-  this.colors.push(this.fb.group({ value: color }));
-  console.log('Selected Colors:', this.colorsList);
-
-  this.productForm.get('currentColor')?.reset();
-}
-
-// 🎨 Preset color click
-selectPresetColor(color: string) {
-  if (this.colors.value.some((c: any) => c.value === color)) return;
-
-  this.colors.push(this.fb.group({ value: color }));
-  console.log('Colors List:', this.colorsList);
-}
-
-  removeColor(index: number) {
-    this.colors.removeAt(index);
-    console.log('After Remove:', this.colorsList);
-  }
-
-  // Auto Discount Calculation
+  // ================= DISCOUNT =================
   autoDiscountCalculation() {
     this.productForm.valueChanges.subscribe((val) => {
       const price = Number(val.price);
       const oldprice = Number(val.oldprice);
 
-      if (isNaN(price) || isNaN(oldprice)) {
-        this.productForm.patchValue({ discount: 0 }, { emitEvent: false });
-        return;
-      }
-
-      if (oldprice > 0 && price > 0 && oldprice > price) {
+      if (oldprice > price && oldprice > 0) {
         const discount = Math.round(((oldprice - price) / oldprice) * 100);
         this.productForm.patchValue({ discount }, { emitEvent: false });
       } else {
@@ -325,103 +187,46 @@ selectPresetColor(color: string) {
     });
   }
 
-  // addProduct() {
-  //   const val = this.productForm.value;
+  // ================= SAVE =================
+ addProduct() {
+  const val = this.productForm.value;
 
-  //   const payload = {
-  //     itemId: this.SaveData ? this.SaveData.itemId : 0,
-  //     itemName: val.name,
-  //     price: Number(val.price),
-  //     oldPrice: Number(val.oldprice),
-  //     discount: Number(val.discount),
-  //     qty: Number(val.quantity),
-  //     img: '',
-  //     detail: val.description,
-  //     saleCode:1,
-  //     color: val.colors?.map((c: any) => c.value).join(','),
+  const payload: any = {
+    ItemId: this.SaveData ? this.SaveData.itemId : 0,
+    ItemName: val.name,
+    Price: Number(val.price),
+    OldPrice: Number(val.oldprice),
+    Discount: Number(val.discount),
+    Qty: Number(val.quantity),
+    Detail: val.description,
+    SaleCode: 1,
+    Category: val.itemCategory,
+    Brand: val.brand,
+    CreatedDate: new Date(),
 
-  //     classifiedId:
-  //       val.productCategory === 'Kids'
-  //         ? 1
-  //         : val.productCategory === 'Young Girl'
-  //           ? 2
-  //           : 3,
+    ClassifiedId:
+      val.productCategory === 'Kids'
+        ? 1
+        : val.productCategory === 'Young Girl'
+        ? 2
+        : 3,
 
-  //     category: val.itemCategory,
-  //     brand: val.brand,
-  //     createdDate: new Date(),
+    // ✅ FIXED (MATCH BACKEND)
+    ItemColors: val.colors?.map((x: any) => ({
+      ColorCode: x.value
+    })),
 
-  //     itemColors: val.colors?.map((x: any) => ({
-  //       id: x.id ?? 0,
-  //       itemId: 0,
-  //       colorCodes: x.value,
-  //     })),
+    ItemSizes: val.sizes?.map((x: any) => ({
+      SizeName: x
+    }))
+  };
 
-  //     itemSizes: val.sizes?.map((x: any) => ({
-  //       id: x.id ?? 0,
-  //       itemId: 0,
-  //       sizeNames: x,
-  //     })),
+  // ✅ FILES ATTACH
+  payload.ImageFiles = this.selectedFiles;
 
-  //     itemImages: val.images?.map((x: any) => ({
-  //       id: x.id ?? 0,
-  //       itemId: 0,
-  //       imgPaths: x,
-  //     })),
-  //   };
-
-  //   if (payload.itemId === 0) this.saveProduct(payload);
-  //   else this.updateProduct(payload);
-  // }
-
-  addProduct() {
-    const val = this.productForm.value;
-
-    const payload = {
-      itemId: this.SaveData ? this.SaveData.itemId : 0,
-      itemName: val.name,
-      price: Number(val.price),
-      oldPrice: Number(val.oldprice),
-      discount: Number(val.discount),
-      qty: Number(val.quantity),
-      img: '',
-      detail: val.description,
-      saleCode:1,
-      color: val.colors?.map((c: any) => c.value).join(','),
-
-      classifiedId:
-        val.productCategory === 'Kids'
-          ? 1
-          : val.productCategory === 'Young Girl'
-            ? 2
-            : 3,
-
-      category: val.itemCategory,
-      brand: val.brand,
-      createdDate: new Date(),
-
-      itemColors: val.colors?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        colorCodes: x.value,
-      })),
-
-      itemSizes: val.sizes?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        sizeNames: x,
-      })),
-
-      itemImages: val.images?.map((x: any) => ({
-        id: x.id ?? 0,
-        itemId: 0,
-        imgPaths: x,
-      })),
-    };
-
-    if (payload.itemId === 0) this.saveProduct(payload);
-    else this.updateProduct(payload);
-  }
+  if (payload.ItemId === 0) this.saveProduct(payload);
+  else this.updateProduct(payload);
+}
 
   saveProduct(payload: any) {
     this.api.saveItems(payload).subscribe(() => {
@@ -437,106 +242,95 @@ selectPresetColor(color: string) {
     });
   }
 
-  // Edit Product
-  EditProduct(p: any) {
-    this.Isbtn = true;
-    this.SaveData = p;
-    this.productForm.patchValue({
-      name: p.itemName,
-      brand: p.brand,
-      price: p.price,
-      oldprice: p.oldprice,
-      discount: p.discount,
-      quantity: p.qty,
-      itemCategory: p.category,
-      productCategory:
-        p.classifiedId === 1
-          ? 'Kids'
-          : p.classifiedId === 2
-            ? 'Young Girl'
-            : 'Young Boy',
-      description: p.detail,
-      video: p.video || '',
-    });
+  // ================= EDIT =================
+ EditProduct(p: any) {
+  this.Isbtn = true;
+  this.SaveData = p;
 
-    // Clear & set images
-    this.images.clear();
-    if (p.itemImages?.length > 0)
-      p.itemImages.forEach((img: any) =>
-        this.images.push(this.fb.control(img.imgPaths)),
-      );
+  this.productForm.patchValue({
+    name: p.itemName,
+    brand: p.brand,
+    price: p.price,
+    oldprice: p.oldPrice,
+    discount: p.discount,
+    quantity: p.qty,
+    itemCategory: p.category,
+    productCategory:
+      p.classifiedId === 1
+        ? 'Kids'
+        : p.classifiedId === 2
+        ? 'Young Girl'
+        : 'Young Boy',
+    description: p.detail,
+  });
 
-    // Clear & set colors
-    this.colors.clear();
-    if (p.itemColors?.length > 0)
-      p.itemColors.forEach((c: any) =>
-        this.colors.push(this.fb.group({ value: c.colorCodes })),
-      );
+  // ✅ IMAGES (backend field FIX)
+  this.images.clear();
+  p.itemImages?.forEach((img: any) =>
+    this.images.push(this.fb.control(img.imgPath)) // ✔ FIXED
+  );
 
-    // Clear & set sizes
-    this.sizes.clear();
-    if (p.itemSizes?.length > 0)
-      p.itemSizes.forEach((s: any) =>
-        this.sizes.push(this.fb.control(s.sizeNames)),
-      );
-  }
+  // ✅ COLORS FIX
+  this.colors.clear();
+  p.itemColors?.forEach((c: any) =>
+    this.colors.push(this.fb.group({ value: c.colorCode })) // ✔ FIXED
+  );
 
-  ResetForm() {
-    this.Isbtn = false;
-    this.SaveData = null;
+  // ✅ SIZES FIX
+  this.sizes.clear();
+  p.itemSizes?.forEach((s: any) =>
+    this.sizes.push(this.fb.control(s.sizeName)) // ✔ FIXED
+  );
 
-    this.sizes.clear();
-    this.colors.clear();
-    this.images.clear();
+  // ⚠️ RESET FILES (important)
+  this.selectedFiles = [];
+}
 
-    this.productForm.reset({
-      name: '',
-      brand: '',
-      productCategory: 'Young Boy',
-      price: '',
-      oldprice: '',
-      discount: '',
-      quantity: '',
-      itemCategory: '',
-      description: '',
-      video: '',
-      currentColor: '',
-      status: true,
-    });
-    this.filteredData = [...this.DataItem];
-  }
+  // ================= RESET =================
+ResetForm() {
+  this.Isbtn = false;
+  this.SaveData = null;
 
+  this.productForm.reset({
+    productCategory: 'Young Boy',
+    status: true,
+  });
+
+  this.images.clear();
+  this.colors.clear();
+  this.sizes.clear();
+
+  // ✅ CLEAR FILES
+  this.selectedFiles = [];
+}
+
+  // ================= API =================
   getAll() {
-    this.api.getItemsAll().subscribe((res: any) => {
+    this.api.getItemss().subscribe((res: any) => {
       if (res.isSuccess) {
-        this.DataItem = res?.data;
-            this.filteredData = [...this.DataItem];
-
-        console.log('dataTime', this.DataItem);
-                console.log(' this.filteredData', this.filteredData);
-
+        this.DataItem = res.data;
+        this.filteredData = [...this.DataItem];
       }
     });
   }
-  DeleteProduct(p: any) {
-    const ok = window.confirm(
-      'Are you sure you want to delete this product? This action cannot be undone.',
-    );
-    if (!ok) return;
-    this.api.DeleteItems(p.itemId).subscribe(() => this.getAll());
-  }
-  toggleStatus(product: any) {
-    product.status = !product.status; // Toggle value
 
-    // Update backend
+  DeleteProduct(p: any) {
+    if (confirm('Delete this product?')) {
+      this.api.DeleteItems(p.itemId).subscribe(() => this.getAll());
+    }
+  }
+
+  // ✅ FIXED (product error solved)
+  toggleStatus(product: any) {
+    product.status = !product.status;
+
     this.api
       .UpdateItems(product.itemId, { ...product, status: product.status })
       .subscribe(() => {
-        // Optional: toast / alert
         console.log(
           `${product.itemName} status updated to ${
             product.status ? 'Active' : 'Inactive'
-          }`,
+          }`
         );
       });
   }

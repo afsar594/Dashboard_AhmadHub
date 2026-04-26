@@ -187,62 +187,102 @@
   </form>
 
   <!-- PRODUCT TABLE -->
-  <div class="search-box">
+ <div class="search-box">
   <input type="text" [formControl]="searchControl" />
   <i class="fa-solid fa-magnifying-glass"></i>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Brand</th>
-          <th class="desc-col">Description</th>
-          <th>Price</th>
-          <th>Discount</th>
-          <th>Old Price</th>
-          <th>Quantity</th>
-          <th>Category</th>
-          <th>Sizes</th>
-          <th>Colors</th>
-          <th>Images</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of filteredData">
-          <td>{{ p.itemName }}</td>
-          <td>{{ p.brand }}</td>
-          <td class="desc-col" style="text-align: left">{{ p.detail }}</td>
-          <td>{{ p.price }}</td>
-          <td>{{ p.discount > 0 ? "-" + p.discount + "%" : "No Discount" }}</td>
-          <td>{{ p.oldprice }}</td>
-          <td>{{ p.qty }}</td>
-          <td>{{ p.category }}</td>
-          <td>
-            <div *ngFor="let c of p?.itemSizes">
-              {{ c.sizeNames }}
-            </div>
-          </td>
-          <td >
-            <div class="color-display">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th>Old Price</th>
+        <th>Quantity</th>
+        <th>Category</th>
+        <th>Sizes</th>
+        <th>Colors</th>
+        <th>Images</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let p of filteredData">
+
+        <!-- NAME -->
+        <td>{{ p.itemName || '-' }}</td>
+
+        <!-- BRAND -->
+        <td>{{ p.brand || '-' }}</td>
+
+        <!-- DESCRIPTION -->
+        <td>{{ p.detail || '-' }}</td>
+
+        <!-- PRICE -->
+        <td>{{ p.price || 0 }}</td>
+
+        <!-- DISCOUNT -->
+        <td>
+          {{ p.discount ? '-' + p.discount + '%' : 'No Discount' }}
+        </td>
+
+        <!-- OLD PRICE -->
+        <td>{{ p.oldPrice || 0 }}</td>
+
+        <!-- QTY -->
+        <td>{{ p.qty || 0 }}</td>
+
+        <!-- CATEGORY -->
+        <td>{{ p.category || '-' }}</td>
+
+        <!-- SIZES -->
+        <td>
+          <div *ngFor="let s of p?.itemSizes">
+            {{ s.sizeName || s.sizeNames || '-' }}
+          </div>
+        </td>
+
+        <!-- COLORS -->
+        <td>
+          <div class="color-display">
             <div
               *ngFor="let c of p?.itemColors"
               class="color-dot-table"
-              [style.background]="c.colorCodes"
+              [style.background]="c.colorCode"
             ></div>
-            </div>
-          </td>
-          <td>
-  <div *ngFor="let img of p.itemImages">
-    <img [src]="img.imgPaths" class="product-img" />
+          </div>
+        </td>
+
+        <!-- IMAGES -->
+        <td>
+  <div *ngFor="let img of p?.itemImages">
+
+    <img
+      *ngIf="img?.imgPath"
+      [src]="baseUrl + img.imgPath"
+      class="product-img"
+    />
+
   </div>
+
+  <!-- fallback if no image -->
+  <span *ngIf="!p?.itemImages?.length || !p?.itemImages[0]?.imgPath">
+    No Image
+  </span>
 </td>
-          <td>
-            <div  class="btn-group">
+
+        <!-- ACTIONS -->
+        <td>
+          <div class="btn-group">
             <button class="small-btn" (click)="EditProduct(p)">Edit</button>
+
             <button class="small-btn cancel" (click)="DeleteProduct(p)">
               Delete
             </button>
+
             <button
               class="status-btn"
               [ngClass]="p.status ? 'active' : 'inactive'"
@@ -250,10 +290,11 @@
             >
               {{ p.status ? "Active" : "Inactive" }}
             </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
 </div>
