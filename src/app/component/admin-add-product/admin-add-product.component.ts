@@ -22,12 +22,18 @@ export class AdminAddProductComponent {
   productForm!: FormGroup;
   DataItem: any[] = [];
   filteredData: any[] = [];
-
+  shake = false;
+submitted = false;
   Isbtn: boolean = false;
+  showSuccess = false;
+successMessage = '';
+showConfirm = false;
+confirmMessage = '';
   SaveData: any;
 selectedFile!: File;
 selectedFiles: File[] = [];
   searchControl = new FormControl('');
+  
 
   constructor(private fb: FormBuilder, private api: ApiService) {}
 
@@ -40,9 +46,9 @@ selectedFiles: File[] = [];
       discount: [0],
       quantity: ['', [Validators.required, Validators.min(0)]],
       itemCategory: ['', Validators.required],
-      productCategory: ['Young Boy', Validators.required],
+      // productCategory: ['Young Boy', Validators.required],
       description: ['', Validators.required],
-      images: this.fb.array([], [Validators.required, Validators.minLength(1)]),
+images: this.fb.array([], [Validators.required, Validators.minLength(1)]),
       video: [''],
       sizes: this.fb.array([]),
       currentColor: [''],
@@ -124,6 +130,15 @@ processFiles(files: FileList) {
     }
   }
 
+  confirmYes() {
+  this.showConfirm = false;
+  this.addProduct(); // ✅ actual API call
+}
+
+confirmNo() {
+  this.showConfirm = false;
+}
+
   // ✅ FIXED (removeVideo error solved)
   removeVideo() {
     if (confirm('Remove video?')) {
@@ -188,7 +203,54 @@ processFiles(files: FileList) {
   }
 
   // ================= SAVE =================
- addProduct() {
+//  addProduct() {
+//   const val = this.productForm.value;
+
+//   const payload: any = {
+//     ItemId: this.SaveData ? this.SaveData.itemId : 0,
+//     ItemName: val.name,
+//     Price: Number(val.price),
+//     OldPrice: Number(val.oldprice),
+//     Discount: Number(val.discount),
+//     Qty: Number(val.quantity),
+//     Detail: val.description,
+//     SaleCode: 1,
+//     Category: val.itemCategory,
+//     Brand: val.brand,
+//     CreatedDate: new Date(),
+
+//     ClassifiedId:
+//       val.productCategory === 'Kids'
+//         ? 1
+//         : val.productCategory === 'Young Girl'
+//         ? 2
+//         : 3,
+
+//     ItemColors: val.colors?.map((x: any) => ({
+//       ColorCode: x.value
+//     })),
+
+//     ItemSizes: val.sizes?.map((x: any) => ({
+//       SizeName: x
+//     }))
+//   };
+
+//   // ✅ FILES ATTACH
+//   payload.ImageFiles = this.selectedFiles;
+
+//   if (payload.ItemId === 0) this.saveProduct(payload);
+//   else this.updateProduct(payload);
+// }
+addProduct() {
+  console.log('ADD PRODUCT CALL'); // 👈 ADD THIS
+
+  if (this.productForm.invalid) {
+    this.productForm.markAllAsTouched();
+    this.shakeForm();
+    return;
+  }
+
+  console.log('FORM VALID ✅'); // 👈 ADD THIS
   const val = this.productForm.value;
 
   const payload: any = {
@@ -203,46 +265,80 @@ processFiles(files: FileList) {
     Category: val.itemCategory,
     Brand: val.brand,
     CreatedDate: new Date(),
-
-    ClassifiedId:
-      val.productCategory === 'Kids'
-        ? 1
-        : val.productCategory === 'Young Girl'
-        ? 2
-        : 3,
-
-    // ✅ FIXED (MATCH BACKEND)
     ItemColors: val.colors?.map((x: any) => ({
       ColorCode: x.value
     })),
-
     ItemSizes: val.sizes?.map((x: any) => ({
       SizeName: x
     }))
   };
 
-  // ✅ FILES ATTACH
   payload.ImageFiles = this.selectedFiles;
 
   if (payload.ItemId === 0) this.saveProduct(payload);
   else this.updateProduct(payload);
 }
 
-  saveProduct(payload: any) {
-    this.api.saveItems(payload).subscribe(() => {
+  // saveProduct(payload: any) {
+  //   this.api.saveItems(payload).subscribe(() => {
+  //     this.getAll();
+  //     this.ResetForm();
+  //   });
+  // }
+
+saveProduct(payload: any) {
+  const formData = new FormData();
+
+  Object.keys(payload).forEach(key => {
+    formData.append(key, payload[key]);
+  });
+
+  this.selectedFiles.forEach(file => {
+    formData.append('ImageFiles', file);
+  });
+
+  this.api.saveItems(formData).subscribe({
+    next: (res) => {
+      this.successMessage = 'Product Added Successfully ✅';
+      this.showSuccess = true;
+
+       // 👇 YE YAHAN ADD KARNA HAI
+      setTimeout(() => {
+        this.showSuccess = false;
+      }, 5000);
+
+      // 👇 optional but better UX
       this.getAll();
       this.ResetForm();
-    });
-  }
+    },
+    error: (err) => {
+      console.log(err);
+    }
+  });
+}
+
+  // updateProduct(payload: any) {
+  //   this.api.UpdateItems(payload.itemId, payload).subscribe(() => {
+  //     this.getAll();
+  //     this.ResetForm();
+  //   });
+  // }
 
   updateProduct(payload: any) {
-    this.api.UpdateItems(payload.itemId, payload).subscribe(() => {
-      this.getAll();
-      this.ResetForm();
-    });
-  }
+  this.api.UpdateItems(payload.itemId, payload).subscribe(() => {
 
-  // ================= EDIT =================
+    this.successMessage = 'Product Updated Successfully ✏️';
+    this.showSuccess = true;
+
+    setTimeout(() => {
+      this.showSuccess = false;
+    }, 3000);
+
+    this.getAll();
+    this.ResetForm();
+  });
+}
+
  EditProduct(p: any) {
   this.Isbtn = true;
   this.SaveData = p;
@@ -255,12 +351,6 @@ processFiles(files: FileList) {
     discount: p.discount,
     quantity: p.qty,
     itemCategory: p.category,
-    productCategory:
-      p.classifiedId === 1
-        ? 'Kids'
-        : p.classifiedId === 2
-        ? 'Young Girl'
-        : 'Young Boy',
     description: p.detail,
   });
 
@@ -286,6 +376,27 @@ processFiles(files: FileList) {
   this.selectedFiles = [];
 }
 
+shakeForm() {
+  this.shake = true;
+
+  setTimeout(() => {
+    this.shake = false;
+  }, 500);
+}
+
+onSubmit() {
+  this.submitted = true;
+
+  if (this.productForm.invalid) {
+    this.productForm.markAllAsTouched();
+    this.shakeForm();
+    return;
+  }
+
+  // 👇 custom alert open
+  this.confirmMessage = 'Are you sure you want to add this product?';
+  this.showConfirm = true;
+}
   // ================= RESET =================
 ResetForm() {
   this.Isbtn = false;
@@ -313,6 +424,16 @@ ResetForm() {
       }
     });
   }
+
+ isInvalid(field: string): boolean {
+  const control = this.productForm.get(field);
+
+  return !!(
+    control &&
+    this.submitted &&   // 👈 ONLY AFTER CLICK
+    control.invalid
+  );
+}
 
   DeleteProduct(p: any) {
     if (confirm('Delete this product?')) {

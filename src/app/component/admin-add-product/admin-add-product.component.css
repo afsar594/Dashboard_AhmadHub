@@ -1,11 +1,17 @@
 /* ===== Container ===== */
+* {
+  box-sizing: border-box;
+}
 .product-management-container {
-  max-width: 1150px;
-  margin: 40px auto;
+  /* max-width: 1150px; */
+  /* margin: 40px auto; */
+   max-width: 100%;
+  overflow-x: hidden;
+  width: 100%;
   padding: 30px;
   background: #273449;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  /* border-radius: 12px; */
+  /* box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -19,6 +25,69 @@ h2 {
 color: white;
 }
 
+.image-dropzone {
+  width: 100%;
+  padding: 35px;
+  text-align: center;
+
+  border: 2px dashed rgba(0, 245, 212, 0.35);
+  border-radius: 16px;
+
+  background: linear-gradient(145deg, #111827, #1E293B);
+  color: white;
+
+  transition: 0.3s ease;
+  position: relative;
+}
+
+.image-dropzone:hover {
+  border-color: #00F5D4;
+  box-shadow: 0 0 25px rgba(0, 245, 212, 0.15);
+  transform: translateY(-2px);
+}
+
+.image-dropzone p {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.image-dropzone small {
+  color: #94a3b8;
+}
+
+.custom-file-upload {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.custom-file-upload input {
+  display: none;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 22px;
+  /* border-radius: 50px; */
+
+  background: linear-gradient(135deg, #00F5D4, #00d9b8);
+  color: #0F172A;
+
+  font-weight: 700;
+  font-size: 14px;
+
+  /* box-shadow: 0 10px 25px rgba(0, 245, 212, 0.25); */
+  transition: 0.3s ease;
+}
+
+.upload-btn:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 245, 212, 0.35);
+}
 
 /* ===== Form ===== */
 .form-container {
@@ -281,8 +350,8 @@ color: white;
 /* ===== Product Table Container ===== */
 .product-table-container {
   width: 100%;
-  overflow-x: auto;
-  margin-top: 30px;
+ overflow-x: hidden; 
+   margin-top: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   background: #fff;
@@ -292,16 +361,13 @@ color: white;
 table {
   width: 100%;
   border-collapse: collapse;
-  /* table-layout: fixed;  */
-  min-width: 900px;
-  table-layout: auto;
+  table-layout: fixed;   /* 🔥 important */
+  min-width: 0;          /* 🔥 remove scroll */
 }
 
 .desc-col {
-  width: 15%;
-  text-align: left;
-  white-space: normal;
-  line-height: 1.5;
+  width: 20%;
+  word-break: break-word;
 }
 
 th,
@@ -329,12 +395,9 @@ th {
 }
 
 .product-img-wrapper {
-  display: flex;
-  gap: 5px;
   flex-wrap: wrap;
-  align-items: center;
-  overflow-x: hidden;
-  max-width: 250px;
+  overflow: hidden;   /* 🔥 scroll remove */
+  max-width: 100%;
 }
 
 .product-img {
@@ -385,19 +448,127 @@ td img {
 .search-box {
   position: relative;
   width: 100%;
+  margin-top: 20px;
 }
 
+/* INPUT */
 .search-box input {
   width: 40%;
-  padding: 12px 45px 12px 15px; /* right space for icon */
+  padding: 12px 45px 12px 18px;
   border-radius: 30px;
-  border: 2px solid #000;
+  border: 2px solid #333F55;
   outline: none;
-  background: transparent;
+  background: #1E293B;
   color: white;
   font-size: 14px;
+  transition: 0.3s ease;
 }
 
+/* FOCUS */
+.search-box input:focus {
+  border-color: #00F5D4;
+  box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.2);
+}
+
+/* ICON FIXED INSIDE INPUT */
+.search-box i {
+  position: absolute;
+  left: calc(40% - 40px);  /* 👈 input width ke andar align */
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+
+  background: #00F5D4;
+  color: #0F172A;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  pointer-events: none;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.field-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-box input {
+  width: 100%;
+}
+
+/* 🔴 red border box */
+.field-box.invalid input {
+  border: 2px solid red !important;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+  animation: shake 0.3s ease-in-out;
+}
+
+/* 🔴 ERROR BOX */
+.error-box {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+
+  padding: 3px 6px;
+  border-radius: 3px;
+
+  animation: blink 0.8s infinite;
+}
+
+/* 🔥 blinking effect */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+/* shake effect */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+
+.success-box {
+  background: #00F5D4;
+  color: #0F172A;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 600;
+
+  animation: fadeIn 0.4s ease;
+}
+
+/* animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .color-section {
   display: flex;
   flex-direction: column;
@@ -436,8 +607,8 @@ td img {
 /* 🔥 Right circular icon */
 .search-box i {
   position: absolute;
-  right: 628px;
-  top: 25%;
+ right: 10px; 
+   top: 25%;
   transform: translateY(-50%);
   
   background: #000;
@@ -532,6 +703,80 @@ td .small-btn.cancel:hover {
   background-color: rgb(175, 15, 15);
 }
 
+
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.modal-box {
+  background: #1E293B;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  min-width: 300px;
+
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.yes-btn {
+  background: #00F5D4;
+  color: #0F172A;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.no-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.success-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+/* 👇 show state */
+.success-box.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 /* td .small-btn:hover {
   background-color: #0056b3;
 } */

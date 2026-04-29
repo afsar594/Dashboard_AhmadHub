@@ -1,31 +1,28 @@
 <div class="product-management-container">
   <h2>Admin Product Management</h2>
 
-  <form [formGroup]="productForm" class="form-container">
-    <!-- PRODUCT CATEGORY -->
-    <div class="radio-group">
-      <label
-        ><input
-          type="radio"
-          value="Young Boy"
-          formControlName="productCategory"
-        />
-        Young Boy</label
-      >
-      <label
-        ><input
-          type="radio"
-          value="Young Girl"
-          formControlName="productCategory"
-        />
-        Young Girl</label
-      >
-      <label
-        ><input type="radio" value="Kids" formControlName="productCategory" />
-        Kids</label
-      >
-    </div>
+  <!-- ✅ SUCCESS MESSAGE -->
+  <div class="success-box" [class.show]="showSuccess">
+  {{ successMessage }}
+</div>
 
+<!-- ✅ CUSTOM CONFIRM MODAL -->
+<div class="custom-modal" *ngIf="showConfirm">
+  <div class="modal-box">
+    <p>{{ confirmMessage }}</p>
+
+    <div class="modal-actions">
+      <button class="yes-btn" (click)="confirmYes()">Yes</button>
+      <button class="no-btn" (click)="confirmNo()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <form
+  [formGroup]="productForm"
+  (ngSubmit)="onSubmit()"
+  class="form-container"
+>
     <!-- SIZES -->
     <div class="size-box">
       <span style="color: white;">Sizes:</span>
@@ -66,9 +63,20 @@
     </div>
 
     <!-- PRODUCT INFO -->
-    <input formControlName="name" placeholder="Product Name" />
-    <input formControlName="brand" placeholder="Brand Name" />
-    <input type="number" min="1" formControlName="price" placeholder="Price" />
+<div class="field-box" [ngClass]="{ invalid: isInvalid('name') }">
+  <input formControlName="name" placeholder="Product Name" />
+  <span class="error-box" *ngIf="isInvalid('name')">
+    Required
+  </span>
+</div>
+<div class="field-box" [ngClass]="{ invalid: isInvalid('brand') }">
+  <input formControlName="brand" placeholder="Brand Name" />
+  <span class="error-box" *ngIf="isInvalid('brand')">Required</span>
+</div>
+<div class="field-box" [ngClass]="{ invalid: isInvalid('price') }">
+  <input type="number" formControlName="price" placeholder="Price" />
+  <span class="error-box" *ngIf="isInvalid('price')">Required</span>
+</div>
     <input
       type="number"
       min="0"
@@ -76,12 +84,17 @@
       placeholder="Old Price"
     />
     <input type="number" formControlName="discount" placeholder="Discount %" />
-    <input
-      type="number"
-      min="0"
-      formControlName="quantity"
-      placeholder="Quantity"
-    />
+    <div class="field-box" [ngClass]="{ invalid: isInvalid('quantity') }">
+  <input
+    type="number"
+    min="0"
+    formControlName="quantity"
+    placeholder="Quantity"
+  />
+  <span class="error-box" *ngIf="isInvalid('quantity')">
+    Required
+  </span>
+</div>
     <input formControlName="itemCategory" placeholder="Category" />
     <textarea
       formControlName="description"
@@ -90,21 +103,28 @@
     ></textarea>
 
     <!-- IMAGE DRAG & DROP -->
-    <div
-      class="image-dropzone"
-     
-      (dragover)="onDragOver($event)"
-    >
-     <!-- (drop)="onDrop($event)" -->
-      <p>Drag & drop images here or click to select</p>
-      <small>(Images + 1 vedio allowed)</small>
-      <input
-        type="file"
-        accept="image/* , video/*"
-        (change)="onFileSelect($event)"
-        multiple
-      />
-    </div>
+    <!-- IMAGE DRAG & DROP -->
+<div class="image-dropzone" (dragover)="onDragOver($event)">
+
+  <p>Drag & drop images here or click to select</p>
+  <small>(Images + 1 video allowed)</small>
+
+  <!-- CUSTOM FILE BUTTON -->
+  <label class="custom-file-upload">
+    <input
+      type="file"
+      accept="image/*,video/*"
+      (change)="onFileSelect($event)"
+      multiple
+    />
+
+    <span class="upload-btn">
+      <i class="fa-solid fa-plus"></i>
+      Choose Files
+    </span>
+  </label>
+
+</div>
 
     <!-- IMAGE PREVIEW -->
 <div class="image-preview-container">
@@ -159,14 +179,12 @@
     <!-- FORM ACTIONS -->
     <div class="btn-container">
       <button
-        type="button"
-        class="small-btn"
-        [disabled]="productForm.invalid"
-        (click)="addProduct()"
-      
-      >
-        Add Product
-      </button>
+  type="submit"
+  class="small-btn"
+  (click)="onSubmit()"
+>
+  Add Product
+</button>
       <button
         type="button"
         class="small-btn"
