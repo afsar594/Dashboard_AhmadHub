@@ -398,21 +398,53 @@ onSubmit() {
   this.showConfirm = true;
 }
   // ================= RESET =================
+// ResetForm() {
+//   this.Isbtn = false;
+//   this.SaveData = null;
+
+//   this.productForm.reset({
+//     productCategory: 'Young Boy',
+//     status: true,
+//   });
+
+//   this.images.clear();
+//   this.colors.clear();
+//   this.sizes.clear();
+
+//   // ✅ CLEAR FILES
+//   this.selectedFiles = [];
+// }
 ResetForm() {
   this.Isbtn = false;
   this.SaveData = null;
+  this.submitted = false;
 
+  // ✅ PURE CLEAN RESET WITH DEFAULTS
   this.productForm.reset({
-    productCategory: 'Young Boy',
-    status: true,
+    name: '',
+    brand: '',
+    price: '',
+    oldprice: 0,
+    discount: 0,
+    quantity: '',
+    itemCategory: '',
+    description: '',
+    video: '',
+    currentColor: '',
+    status: true
   });
 
+  // ✅ IMPORTANT: FormArrays clear
   this.images.clear();
   this.colors.clear();
   this.sizes.clear();
 
-  // ✅ CLEAR FILES
+  // ✅ FILES clear
   this.selectedFiles = [];
+
+  // ✅ update validation state (important 🔥)
+  this.productForm.markAsPristine();
+  this.productForm.markAsUntouched();
 }
 
   // ================= API =================

@@ -95,7 +95,13 @@
     Required
   </span>
 </div>
-    <input formControlName="itemCategory" placeholder="Category" />
+
+<div class="field-box" [ngClass]="{ invalid: isInvalid('itemCategory') }">
+  <input formControlName="itemCategory" placeholder="Category" />
+  <span class="error-box" *ngIf="isInvalid('itemCategory')">
+    Required
+  </span>
+</div>
     <textarea
       formControlName="description"
       class="desc-box"
