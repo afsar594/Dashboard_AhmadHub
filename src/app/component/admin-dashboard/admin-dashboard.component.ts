@@ -75,7 +75,7 @@ export class AdminDashboardComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getAllProduch();
+    this.getDashboardData();
     this.lowStockProducts = this.products.filter((p) => {
       const remaining = p.totalQuantity - p.sold;
       return remaining > 0 && remaining <= 5;
@@ -88,12 +88,52 @@ export class AdminDashboardComponent {
   navigatetoadminproduct() {
     this.router.navigate(['adminproductmanagement']);
   }
-  getAllProduch() {
-    this.api.getItemsAll().subscribe((res: any) => {
-      this.allProduct = res.data;
+getDashboardData() {
+  this.api.getItemsAll().subscribe((res: any) => {
 
-    });
-  }
+    // ✅ HANDLE BOTH API TYPES (IMPORTANT FIX)
+    const data = res?.data ?? res;
+
+    console.log('Dashboard API Data:', data);
+
+    // =======================
+    // STATS
+    // =======================
+    this.stats.totalProducts = data?.productCount || 0;
+    this.stats.totalSales = data?.checkouts || 0;
+
+    // =======================
+    // STOCK
+    // =======================
+    this.lowStockProducts = data?.lowStockProducts || [];
+    this.outOfStockProducts = data?.outOfStockProducts || [];
+
+    // =======================
+    // MONTHLY GRAPH
+    // =======================
+    this.productSalesLabels = (data?.monthlygraphReport || []).map((x: any) =>
+      `${x.year}-${x.month}`
+    );
+
+    this.productSalesData = (data?.monthlygraphReport || []).map((x: any) =>
+      x.qty
+    );
+
+    // =======================
+    // WEEKLY GRAPH
+    // =======================
+    this.weeklyLabels = (data?.weeklylygraphReport || []).map((x: any) =>
+      x.productName
+    );
+
+    this.weeklySales = (data?.weeklylygraphReport || []).map((x: any) =>
+      x.qty
+    );
+
+  }, error => {
+    console.error('API Error:', error);
+  });
+}
 }
 interface Product {
   id: number;

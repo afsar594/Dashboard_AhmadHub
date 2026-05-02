@@ -1,114 +1,113 @@
-<!-- <h2 class="dashboard"  (click)="navigatetoadminproduct()">Admin Product Management</h2>  -->
 <div class="product-management-container">
-<h2 class="title">Admin Dashboard</h2>
+  <h2 class="title">Admin Dashboard</h2>
 
-<div class="admin-action" (click)="navigatetoadminproduct()">
-  <div class="text">
-    <h3>Admin Product Management</h3>
-    <p>Click to view and manage products</p>
-  </div>
-  <span class="arrow">→</span>
-</div>
-
-<!-- Widgets -->
-<div class="dashboard-grid">
-  <app-widget-card
-    title="Total Products"
-    [value]="allProduct?.productCount"
-    titleColor="#FF4D6D"
-  ></app-widget-card>
-
-  <app-widget-card
-    title="Total Sales"
-    [value]="allProduct?.checkouts"
-    titleColor="#4CC9F0"
-  ></app-widget-card>
-
-  <app-widget-card
-    title="Daily Sales"
-    [value]="0"
-    titleColor="#F72585"
-  ></app-widget-card>
-
-  <app-widget-card
-    title="Weekly Sales"
-    [value]="0"
-    titleColor="#B5179E"
-  ></app-widget-card>
-
-  <app-widget-card
-    title="Monthly Sales"
-    [value]="0"
-    titleColor="#00F5D4"
-  ></app-widget-card>
-</div>
-
-<!-- Stock alert section -->
-<div
-  class="stock-alerts"
-  *ngIf="allProduct.lowStockProducts.length"
->
-  <div class="alert low-stock" *ngIf="allProduct.lowStockProducts.length">
-    <h4 style="color: #FF4D6D;">⚠ Low Stock Products</h4>
-    <div *ngFor="let p of allProduct.lowStockProducts">
-      {{ p.productName }} - Only {{ p.qty}} left
+  <div class="admin-action" (click)="navigatetoadminproduct()">
+    <div class="text">
+      <h3>Admin Product Management</h3>
+      <p>Click to view and manage products</p>
     </div>
+    <span class="arrow">→</span>
   </div>
 
-  <div class="alert out-stock" *ngIf="allProduct.outOfStockProducts.length">
-    <h4 style="color: #FF4D6D">⛔ Out of Stock</h4>
+  <!-- Widgets -->
+  <div class="dashboard-grid">
+    <app-widget-card
+      title="Total Products"
+      [value]="stats.totalProducts"
+      titleColor="#FF4D6D"
+    ></app-widget-card>
 
-    <div *ngFor="let p of allProduct.outOfStockProducts">
-      {{ p.productName }}
+    <app-widget-card
+      title="Total Sales"
+      [value]="stats.totalSales"
+      titleColor="#4CC9F0"
+    ></app-widget-card>
+
+    <app-widget-card
+      title="Daily Sales"
+      [value]="0"
+      titleColor="#F72585"
+    ></app-widget-card>
+
+    <app-widget-card
+      title="Weekly Sales"
+      [value]="allProduct?.weeklylygraphReport?.length || 0"
+      titleColor="#B5179E"
+    ></app-widget-card>
+
+    <app-widget-card
+      title="Monthly Sales"
+      [value]="allProduct?.monthlygraphReport?.length || 0"
+      titleColor="#00F5D4"
+    ></app-widget-card>
+  </div>
+
+  <!-- Stock alerts -->
+  <div class="stock-alerts" *ngIf="allProduct?.lowStockProducts?.length > 0">
+
+    <div class="alert low-stock">
+      <h4 style="color: #ff4d6d">⚠ Low Stock Products</h4>
+
+      <div *ngFor="let p of allProduct?.lowStockProducts">
+        {{ p.productName }} - Only {{ p.qty }} left
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- Bar Chart -->
-<div class="charts-row">
-  <div class="chart-section">
-    <h3>Product-wise Sales</h3>
-    <app-widget-chart
-      [labels]="productSalesLabels"
-      [data]="productSalesData"
-      chartType="bar"
-    >
-    </app-widget-chart>
+    <div class="alert out-stock" *ngIf="allProduct?.outOfStockProducts?.length > 0">
+      <h4 style="color: #ff4d6d">⛔ Out of Stock</h4>
+
+      <div *ngFor="let p of allProduct?.outOfStockProducts">
+        {{ p.productName }}
+      </div>
+    </div>
+
   </div>
 
-  <!-- Line Chart -->
-  <div class="chart-section">
-    <h3>Weekly Growth</h3>
-    <app-widget-chart
-      [labels]="weeklyLabels"
-      [data]="weeklySales"
-      chartType="line"
-    >
-    </app-widget-chart>
+  <!-- Charts -->
+  <div class="charts-row">
+
+    <div class="chart-section">
+      <h3>Product-wise Sales</h3>
+      <app-widget-chart
+        [labels]="productSalesLabels"
+        [data]="productSalesData"
+        chartType="bar"
+      ></app-widget-chart>
+    </div>
+
+    <div class="chart-section">
+      <h3>Weekly Growth</h3>
+      <app-widget-chart
+        [labels]="weeklyLabels"
+        [data]="weeklySales"
+        chartType="line"
+      ></app-widget-chart>
+    </div>
+
   </div>
-</div>
 
-<!-- Table -->
-<div class="table-section">
-  <h3>Top Selling Products</h3>
+  <!-- Table -->
+  <div class="table-section">
+    <h3>Top Selling Products</h3>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Sold</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of products">
-        <td>{{ p.id }}</td>
-        <td>{{ p.name }}</td>
-        <td>$ {{ p.price }}</td>
-        <td>{{ p.sold }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Sold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of products">
+          <td>{{ p.id }}</td>
+          <td>{{ p.name }}</td>
+          <td>$ {{ p.price }}</td>
+          <td>{{ p.sold }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
