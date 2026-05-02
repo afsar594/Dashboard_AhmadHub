@@ -772,7 +772,6 @@ td .small-btn.cancel:hover {
   pointer-events: none;
 }
 
-/* 👇 show state */
 .success-box.show {
   opacity: 1;
   transform: translateY(0);
