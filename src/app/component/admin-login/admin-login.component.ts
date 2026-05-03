@@ -71,7 +71,19 @@ export class AdminLoginComponent {
 
 
   navigatetodashboard(){
+  let body = this.loginForm.value;
+      let payload = {
+        id: 0,
+        username: body.email,
+        email: body.email,
+        pwd: body.password,
+        role: 'Admin',
+      };
+      if(payload.username === 'admin' && payload.pwd === 'admin123'){
     this.router.navigate(['dashboard'])
+      } else {
+        alert('Invalid credentials. Please try again.');
+      }
   }
 
      forgotPassword() {
